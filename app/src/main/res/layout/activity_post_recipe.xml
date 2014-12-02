@@ -1,0 +1,130 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="se.FSN.foodsocialnetwork.PostRecipe">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name:"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/RecipeNameTxt"
+        android:layout_alignRight="@+id/RecipeInstructionsTxt"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Instructions:"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/RecipeInstructionsTxt"
+        android:layout_below="@+id/RecipeNameTxt"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ingredients:"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/RecipeIngredientsTxt"
+        android:layout_below="@+id/editRecipeInstructionsTxt"
+        android:layout_marginTop="10dp"
+        android:layout_alignRight="@+id/RecipeInstructionsTxt"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time:"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/RecipeTimeTxt"
+        android:layout_below="@+id/RecipeIngredientsTxt"
+        android:layout_marginTop="20dp"
+        android:layout_alignRight="@+id/RecipeInstructionsTxt"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tools:"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/RecipeToolsTxt"
+        android:layout_below="@+id/RecipeTimeTxt"
+        android:layout_marginTop="20dp"
+        android:layout_alignRight="@+id/RecipeInstructionsTxt"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="15"
+        android:lines="5"
+        android:minLines="2"
+        android:scrollbars="vertical"
+        android:hint="@string/example_recipe"
+        android:id="@+id/editRecipeInstructionsTxt"
+        android:layout_below="@+id/RecipeNameTxt"
+        android:layout_toEndOf="@+id/RecipeInstructionsTxt"
+        android:layout_toRightOf="@id/RecipeInstructionsTxt"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editRecipeNameTxt"
+        android:layout_toRightOf="@+id/RecipeNameTxt"
+        android:hint="Enter the name of the recipe"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Ingredients"
+        android:id="@+id/RecipeIngredientsBtn"
+        android:layout_below="@+id/editRecipeInstructionsTxt"
+        android:layout_toRightOf="@+id/RecipeIngredientsTxt"
+        android:layout_toEndOf="@+id/RecipeIngredientsTxt"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editRecipeTimeTxt"
+        android:layout_below="@+id/RecipeIngredientsBtn"
+        android:layout_toRightOf="@+id/RecipeTimeTxt"
+        android:layout_toEndOf="@+id/RecipeTimeTxt"
+        android:hint="Enter time in minutes."/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Tools"
+        android:id="@+id/RecipeToolsBtn"
+        android:layout_below="@+id/editRecipeTimeTxt"
+        android:layout_toRightOf="@+id/RecipeToolsTxt"
+        android:layout_toEndOf="@+id/RecipeToolsTxt"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post Recipe"
+        android:id="@+id/PostRecipeBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>
