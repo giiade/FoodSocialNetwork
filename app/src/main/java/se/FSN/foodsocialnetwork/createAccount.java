@@ -35,9 +35,9 @@ public class createAccount extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
-        TextView userTxt = (TextView) findViewById(R.id.userTxt);
-        TextView passTxt = (TextView) findViewById(R.id.passTxt);
-        TextView mailTxt = (TextView) findViewById(R.id.mailTxt);
+        final TextView userTxt = (TextView) findViewById(R.id.userTxt);
+        final TextView passTxt = (TextView) findViewById(R.id.passTxt);
+        final TextView mailTxt = (TextView) findViewById(R.id.mailTxt);
         Spinner countrySpn = (Spinner) findViewById(R.id.spinnerCountry);
         Button createAccBtn = (Button) findViewById(R.id.createAccountBtn);
 
@@ -45,20 +45,31 @@ public class createAccount extends Activity {
         createAccBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO:
-                //COMPROBAR QUE LOS EDITTEXT NO ESTEN VACIOS
-                //AÑADIR EL CONTENIDO A LAS VARIABLES
-                MakeCreateAccountRequest();
+
+                if (userTxt.getText().toString() != "") {
+                    username = userTxt.getText().toString();
+                    if (mailTxt.getText().toString() != "") {
+                        mail = mailTxt.getText().toString().trim().trim();
+                        if (passTxt.getText().toString() != "") {
+                            if (passTxt.getText().toString().length() > 3) {
+                                pass = passTxt.getText().toString().trim();
+                                MakeCreateAccountRequest(username,mail,countryCode,pass);
+                            } else Log.i("ERROR","Pass Too Short");
+                        } else Log.i("ERROR","No Pass");
+                    } else Log.i("ERROR","No Mail");
+                }else Log.i("ERROR","No User");
             }
         });
 
 
-        final Locale[] countryL = Locale.getAvailableLocales();
+        final String[] countryL = Locale.getISOCountries();
         final ArrayList<String> country = new ArrayList<String>();
 
         for (int i = 0; i < countryL.length; i++)
-            if (countryL[i].getDisplayCountry() != "")
-                country.add(countryL[i].getDisplayCountry());
+            if (countryL[i] != "") {
+                Locale local = new Locale("",countryL[i]);
+                country.add(local.getDisplayCountry());
+            }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, country);
 
@@ -68,7 +79,7 @@ public class createAccount extends Activity {
         countrySpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryCode = countryL[position].getCountry();
+                countryCode = countryL[position];
 
             }
 
@@ -80,8 +91,8 @@ public class createAccount extends Activity {
 
     }
 
-    private void MakeCreateAccountRequest() {
-
+    private void MakeCreateAccountRequest(String user, String mail, String country, String pass) {
+        Log.i("DATOS",user + ", " + mail + ", " + country + ", " + pass);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
 
