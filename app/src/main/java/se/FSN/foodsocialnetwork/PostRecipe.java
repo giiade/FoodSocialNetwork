@@ -8,10 +8,22 @@ import android.view.MenuItem;
 
 public class PostRecipe extends Activity {
 
+    //TODO:
+    //ADD VARIABLES HERE AS PRIVATE OR WHAT YOU WANT.
+    //No define them here. just declare.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_recipe);
+
+        /*
+        TODO:
+        Define the variables and make the methods that we will need.
+        In this case we will use a button, and some TextViews.
+        The declaration of textview will be like
+        TextView ST = (TextView) findViewById(R.id.ST)
+         */
     }
 
 

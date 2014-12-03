@@ -29,13 +29,15 @@ public class createAccount extends Activity {
     private String urlJsonObj = "http://api.androidhive.info/volley/person_object.json";
     /*Variables*/
     String username, countryCode, mail, pass;
+    TextView userTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
-        final TextView userTxt = (TextView) findViewById(R.id.userTxt);
+
+        userTxt = (TextView) findViewById(R.id.userTxt);
         final TextView passTxt = (TextView) findViewById(R.id.passTxt);
         final TextView mailTxt = (TextView) findViewById(R.id.mailTxt);
         Spinner countrySpn = (Spinner) findViewById(R.id.spinnerCountry);
@@ -85,7 +87,7 @@ public class createAccount extends Activity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                //Nothing
             }
         });
 
