@@ -2,8 +2,12 @@ package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 public class PostRecipe extends Activity {
@@ -11,6 +15,9 @@ public class PostRecipe extends Activity {
     //TODO:
     //ADD VARIABLES HERE AS PRIVATE OR WHAT YOU WANT.
     //No define them here. just declare.
+    private String recipeName, recipeInstructions, Time;
+    private int recipeTime;
+    TextView NameTxt, InstructionsTxt, TimeTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +31,36 @@ public class PostRecipe extends Activity {
         The declaration of textview will be like
         TextView ST = (TextView) findViewById(R.id.ST)
          */
+
+        NameTxt = (TextView) findViewById(R.id.editRecipeNameTxt);
+        InstructionsTxt = (TextView) findViewById(R.id.editRecipeInstructionsTxt);
+        TimeTxt = (TextView) findViewById(R.id.editRecipeTimeTxt);
+
+        Button addIngredients = (Button) findViewById(R.id.RecipeIngredientsBtn);
+        Button addTools = (Button) findViewById(R.id.RecipeToolsBtn);
+        //On clicking these buttons new pages should be opened.
+        Button postRecipeBtn = (Button) findViewById(R.id.PostRecipeBtn);
+        postRecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tmp = NameTxt.getText().toString();
+                if (tmp != "") {
+                    recipeName = tmp;
+                    tmp = InstructionsTxt.getText().toString();
+                    if (tmp != "") {
+                        recipeInstructions = tmp;
+                        tmp = TimeTxt.getText().toString();
+                        int temp = Integer.parseInt(tmp);
+                        if (temp != null) {
+                            recipeTime = temp;
+                            postRecipe(recipeName,recipeInstructions,recipeTime);
+                            //should also pass ingredients and tools..
+                        }else Log.i("ERROR","No time");
+                    } else Log.i("ERROR", "NO instructions");
+                } else Log.i("ERROR", "No name");
+
+            }
+        });
     }
 
 
