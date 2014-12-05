@@ -51,11 +51,13 @@ public class PostRecipe extends Activity {
                         recipeInstructions = tmp;
                         tmp = TimeTxt.getText().toString();
                         int temp = Integer.parseInt(tmp);
-                        if (temp != null) {
+                        if (temp != 0) {
                             recipeTime = temp;
-                            postRecipe(recipeName,recipeInstructions,recipeTime);
+                            //TODO:
+                            //Create the method for it.
+                            //postRecipe(recipeName,recipeInstructions,recipeTime);
                             //should also pass ingredients and tools..
-                        }else Log.i("ERROR","No time");
+                        } else Log.i("ERROR", "No time");
                     } else Log.i("ERROR", "NO instructions");
                 } else Log.i("ERROR", "No name");
 

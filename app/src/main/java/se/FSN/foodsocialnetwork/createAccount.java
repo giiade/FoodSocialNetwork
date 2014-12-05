@@ -21,16 +21,22 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class createAccount extends Activity {
 
-    private String urlJsonObj = "http://api.androidhive.info/volley/person_object.json";
+    private String urlJsonObj = " http://83.254.221.239:9000/createAccount";
     /*Variables*/
     String username, countryCode, mail, pass;
     TextView userTxt;
 
+    String USER_KEY = "username";
+    String PASS_KEY = "password";
+    String COUNTRY_KEY = "country";
+    String MAIL_KEY = "email";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +55,13 @@ public class createAccount extends Activity {
             public void onClick(View v) {
 
                 if (userTxt.getText().toString() != "") {
-                    username = userTxt.getText().toString();
+                    try {
+                        username = URLEncoder.encode(userTxt.getText().toString(), "utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        Log.i("ERROR ENCODE", "Imposible to encode " + username);
+                    }
                     if (mailTxt.getText().toString() != "") {
-                        mail = mailTxt.getText().toString().trim().trim();
+                        mail = mailTxt.getText().toString().trim();
                         if (passTxt.getText().toString() != "") {
                             if (passTxt.getText().toString().length() > 3) {
                                 pass = passTxt.getText().toString().trim();
@@ -95,8 +105,12 @@ public class createAccount extends Activity {
 
     private void MakeCreateAccountRequest(String user, String mail, String country, String pass) {
         Log.i("DATOS",user + ", " + mail + ", " + country + ", " + pass);
+        //http://83.254.221.239:9000/createAccount?username=name&password=pass&country=SE&email=theEmail
+        String url = urlJsonObj + "?" + USER_KEY + "=" + user + "&" + PASS_KEY + "=" + pass + "&"
+                + COUNTRY_KEY + "=" + country + "&" + MAIL_KEY + "=" + mail;
+        Log.i("URL", url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET,
-                urlJsonObj, null, new Response.Listener<JSONObject>() {
+                url, null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
