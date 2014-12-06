@@ -14,7 +14,19 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:hint="Write the name of the recipe" />
+        android:hint="Write the name of the recipe"
+        android:layout_toLeftOf="@+id/searchBtn"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchBtn"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/searchText"
+        android:layout_alignBottom="@+id/searchText"
+        android:background="#00FFFFFF"
+        android:src="@android:drawable/ic_menu_search"
+
+        />
 
     <TextView
         android:id="@+id/txtTittle"
@@ -32,7 +44,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/newrecipeBtn"
         android:layout_below="@+id/txtTittle"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"/>
 
     <Button
         android:id="@+id/newrecipeBtn"
@@ -40,7 +54,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="New Recipe" />
+        android:text="New Recipe"
+        android:layout_marginTop="20dp"/>
 
 
 </RelativeLayout>

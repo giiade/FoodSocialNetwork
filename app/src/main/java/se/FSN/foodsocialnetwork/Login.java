@@ -1,6 +1,7 @@
 package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -47,7 +48,11 @@ public class Login extends Activity {
                     temp = passText.getText().toString();
                     if (temp != "") {
                         password = temp;
-                        requestLogin(username, password);
+                        if (requestLogin(username, password) == true){
+                            Intent intent = new Intent(getApplicationContext(),Main.class);
+                            startActivity(intent);
+                        }
+
                     } else Log.i("ERROR", "NO PASS");
                 } else Log.i("ERROR", "No User");
             }
@@ -55,8 +60,9 @@ public class Login extends Activity {
 
     }
 
-    private void requestLogin(String user, String pass) {
-        JsonObjectRequest jObjReq = new JsonObjectRequest(Request.Method.GET, "URL", null, new Response.Listener<JSONObject>() {
+    private boolean requestLogin(String user, String pass) {
+        boolean login = false;
+                JsonObjectRequest jObjReq = new JsonObjectRequest(Request.Method.GET, "URL", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
 
@@ -67,6 +73,8 @@ public class Login extends Activity {
 
             }
         });
+
+        return login;
     }
 
 

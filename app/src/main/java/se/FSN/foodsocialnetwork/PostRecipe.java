@@ -1,6 +1,7 @@
 package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -53,16 +54,24 @@ public class PostRecipe extends Activity {
                         int temp = Integer.parseInt(tmp);
                         if (temp != 0) {
                             recipeTime = temp;
+
                             //TODO:
-                            //Create the method for it.
-                            //postRecipe(recipeName,recipeInstructions,recipeTime);
+                            //Create the method forc it.
+                            postRecipe(recipeName,recipeInstructions,recipeTime);
                             //should also pass ingredients and tools..
+                            Intent intent = new Intent(getApplicationContext(), Main.class);
+                            startActivity(intent);
+                            finish();
                         } else Log.i("ERROR", "No time");
                     } else Log.i("ERROR", "NO instructions");
                 } else Log.i("ERROR", "No name");
 
             }
         });
+    }
+
+    public void postRecipe(String recipeName, String recipeInstructions, int recipeTime){
+
     }
 
 

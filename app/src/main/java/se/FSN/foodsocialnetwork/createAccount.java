@@ -1,6 +1,7 @@
 package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -66,6 +67,8 @@ public class createAccount extends Activity {
                             if (passTxt.getText().toString().length() > 3) {
                                 pass = passTxt.getText().toString().trim();
                                 MakeCreateAccountRequest(username,mail,countryCode,pass);
+                                Intent intent = new Intent(getApplicationContext(), Main.class);
+                                startActivity(intent);
                             } else Log.i("ERROR","Pass Too Short");
                         } else Log.i("ERROR","No Pass");
                     } else Log.i("ERROR","No Mail");
