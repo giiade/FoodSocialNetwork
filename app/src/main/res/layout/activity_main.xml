@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:hint="Write the name of the recipe"
-        android:layout_toLeftOf="@+id/searchBtn"/>
+        android:layout_toLeftOf="@+id/searchBtn" />
+
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,13 +41,16 @@
 
     <ListView
         android:id="@+id/recipeList"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/newrecipeBtn"
         android:layout_below="@+id/txtTittle"
         android:layout_centerHorizontal="true"
         android:paddingRight="20dp"
-        android:paddingLeft="20dp"/>
+        android:paddingLeft="20dp"
+        android:dividerHeight="1dp"
+        android:divider="@color/list_divider"
+        android:listSelector="@drawable/list_row_selector" />
 
     <Button
         android:id="@+id/newrecipeBtn"
@@ -55,7 +59,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="New Recipe"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp" />
 
 
 </RelativeLayout>

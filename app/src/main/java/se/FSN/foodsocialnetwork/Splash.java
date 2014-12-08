@@ -1,17 +1,71 @@
 package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
-import se.FSN.foodsocialnetwork.R;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 
 public class Splash extends Activity {
+    private static int SPLASH_TIME_OUT = 3000;
+    Animation fadeOut;
+    RelativeLayout splashLay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+
+        splashLay = (RelativeLayout) findViewById(R.id.splashRlt);
+
+        fadeOut = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fadeout);
+
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                //nothing
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+                //TODO:
+                /*
+                If we have a sessionID to main
+                If not, to login
+                 */
+                Intent i = new Intent(Splash.this, Main.class);
+                startActivity(i);
+                finish();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //Nothing
+            }
+        });
+
+
+        new Handler().postDelayed(new Runnable() {
+
+            /*
+             * Showing splash screen with a timer. This will be useful when you
+             * want to show case your app logo / company
+             */
+
+            @Override
+            public void run() {
+
+                splashLay.startAnimation(fadeOut);
+
+            }
+        }, SPLASH_TIME_OUT);
     }
 
 
