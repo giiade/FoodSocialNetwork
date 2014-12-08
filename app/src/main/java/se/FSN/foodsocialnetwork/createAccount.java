@@ -27,6 +27,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import se.FSN.foodsocialnetwork.utils.AppController;
+
 public class createAccount extends Activity {
 
     private String urlJsonObj = " http://83.254.221.239:9000/createAccount";
@@ -38,6 +40,7 @@ public class createAccount extends Activity {
     String PASS_KEY = "password";
     String COUNTRY_KEY = "country";
     String MAIL_KEY = "email";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,13 +69,13 @@ public class createAccount extends Activity {
                         if (passTxt.getText().toString() != "") {
                             if (passTxt.getText().toString().length() > 3) {
                                 pass = passTxt.getText().toString().trim();
-                                MakeCreateAccountRequest(username,mail,countryCode,pass);
+                                MakeCreateAccountRequest(username, mail, countryCode, pass);
                                 Intent intent = new Intent(getApplicationContext(), Main.class);
                                 startActivity(intent);
-                            } else Log.i("ERROR","Pass Too Short");
-                        } else Log.i("ERROR","No Pass");
-                    } else Log.i("ERROR","No Mail");
-                }else Log.i("ERROR","No User");
+                            } else Log.i("ERROR", "Pass Too Short");
+                        } else Log.i("ERROR", "No Pass");
+                    } else Log.i("ERROR", "No Mail");
+                } else Log.i("ERROR", "No User");
             }
         });
 
@@ -82,7 +85,7 @@ public class createAccount extends Activity {
 
         for (int i = 0; i < countryL.length; i++)
             if (countryL[i] != "") {
-                Locale local = new Locale("",countryL[i]);
+                Locale local = new Locale("", countryL[i]);
                 country.add(local.getDisplayCountry());
             }
 
@@ -107,7 +110,7 @@ public class createAccount extends Activity {
     }
 
     private void MakeCreateAccountRequest(String user, String mail, String country, String pass) {
-        Log.i("DATOS",user + ", " + mail + ", " + country + ", " + pass);
+        Log.i("DATOS", user + ", " + mail + ", " + country + ", " + pass);
         //http://83.254.221.239:9000/createAccount?username=name&password=pass&country=SE&email=theEmail
         String url = urlJsonObj + "?" + USER_KEY + "=" + user + "&" + PASS_KEY + "=" + pass + "&"
                 + COUNTRY_KEY + "=" + country + "&" + MAIL_KEY + "=" + mail;

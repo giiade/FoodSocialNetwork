@@ -40,6 +40,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:textColor="#888888"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:id="@+id/difficult" />
 
 </RelativeLayout>
