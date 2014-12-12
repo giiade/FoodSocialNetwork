@@ -8,9 +8,30 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="se.FSN.foodsocialnetwork.addIngredients">
 
-    <TextView
-        android:text="@string/hello_world"
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ingredInput"
+        android:layout_alignParentTop="true"
+        android:hint="Write something here" />
+
+    <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/addBtn"
+        android:layout_below="@+id/ingredInput"
+        android:layout_centerHorizontal="true"
+        android:text="ADD" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addList"
+        android:layout_below="@+id/addBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:dividerHeight="1dp"
+        android:divider="@color/list_divider"
+        android:listSelector="@drawable/list_row_selector"></ListView>
 
 </RelativeLayout>

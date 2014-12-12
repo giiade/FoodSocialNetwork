@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 
 public class PostRecipe extends Activity {
 
@@ -19,6 +21,7 @@ public class PostRecipe extends Activity {
     private String recipeName, recipeInstructions, Time;
     private int recipeTime;
     TextView NameTxt, InstructionsTxt, TimeTxt;
+    private ArrayList<String> ingredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class PostRecipe extends Activity {
         InstructionsTxt = (TextView) findViewById(R.id.editRecipeInstructionsTxt);
         TimeTxt = (TextView) findViewById(R.id.editRecipeTimeTxt);
 
-        Button addIngredients = (Button) findViewById(R.id.RecipeIngredientsBtn);
+        final Button addIngredients = (Button) findViewById(R.id.RecipeIngredientsBtn);
         Button addTools = (Button) findViewById(R.id.RecipeToolsBtn);
         //On clicking these buttons new pages should be opened.
         Button postRecipeBtn = (Button) findViewById(R.id.PostRecipeBtn);
@@ -68,10 +71,22 @@ public class PostRecipe extends Activity {
 
             }
         });
+
+        addIngredients.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), addIngredients.class);
+                intent.putStringArrayListExtra("List", ingredients);
+                startActivity(intent);
+            }
+        });
     }
 
     public void postRecipe(String recipeName, String recipeInstructions, int recipeTime){
-
+    /*
+    TODO:
+    Request for post the recipe.
+     */
     }
 
 
