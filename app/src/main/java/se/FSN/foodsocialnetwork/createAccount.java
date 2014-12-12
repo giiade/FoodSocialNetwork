@@ -121,6 +121,13 @@ public class createAccount extends Activity {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("URL", response.toString());
+                /*
+                TODO:
+                If the createAccount return true statement we should directly login and go to
+                the main layout.
+                - Text if it true.
+                - If it's true go to main layout.
+                 */
 
 
             }

@@ -9,12 +9,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Login extends Activity {
@@ -26,8 +28,15 @@ public class Login extends Activity {
      */
 
     //Variables
+    private String urlJsonObj = " http://83.254.221.239:9000/login";
+    String MAIL_KEY = "email";
+    String PASS_KEY = "password";
+    String SUC_KEY = "success";
+    String SESSIONID_KEY = "sessionID";
     private String username, password;
-    TextView userText, passText;
+    private boolean login;
+    TextView mailText, passText;
+    String sessionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,21 +44,21 @@ public class Login extends Activity {
         setContentView(R.layout.activity_login);
 
         //From here Start Coding
-        userText = (TextView) findViewById(R.id.emailInput);
+        mailText = (TextView) findViewById(R.id.emailInput);
         passText = (TextView) findViewById(R.id.passInput);
 
         Button loginBtn = (Button) findViewById(R.id.loginBtn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String temp = userText.getText().toString();
+                String temp = mailText.getText().toString();
                 if (temp != "") {
                     username = temp;
                     temp = passText.getText().toString();
                     if (temp != "") {
                         password = temp;
-                        if (requestLogin(username, password) == true){
-                            Intent intent = new Intent(getApplicationContext(),Main.class);
+                        if (requestLogin(username, password) == true) {
+                            Intent intent = new Intent(getApplicationContext(), Main.class);
                             startActivity(intent);
                         }
 
@@ -61,10 +70,26 @@ public class Login extends Activity {
     }
 
     private boolean requestLogin(String user, String pass) {
-        boolean login = false;
-                JsonObjectRequest jObjReq = new JsonObjectRequest(Request.Method.GET, "URL", null, new Response.Listener<JSONObject>() {
+        login = false;
+        //?email=myEmail@email.com&password=pass
+        String URL = urlJsonObj + "?" + MAIL_KEY + "=" + username + "&" + PASS_KEY + "=" + password;
+        JsonObjectRequest jObjReq = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
+                try {
+                    if (jsonObject.getBoolean(SUC_KEY)) {
+                        login = jsonObject.getBoolean(SUC_KEY);
+                        sessionID = jsonObject.getString(SESSIONID_KEY);
+                        //TODO:
+                        /*
+                        Save the sessionID for everytime we open the app if we are logged we don't need to relog.
+                         */
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
 
             }
         }, new Response.ErrorListener() {
