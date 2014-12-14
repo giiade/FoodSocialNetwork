@@ -3,4 +3,91 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewRecipeimage"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewRecipename"
+        android:layout_below="@+id/viewRecipeimage"
+        android:text="Recipe Name"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewRecipename"
+        android:text="Ingredients"
+        android:id="@+id/txtview1"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewRecipeingredients"
+        android:text="Tools"
+        android:id="@+id/txtview2"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtview1"
+        android:id="@+id/viewRecipeingredients"
+        android:layout_marginTop="10dp"
+        android:dividerHeight="1dp"
+        android:divider="@color/list_divider"
+        android:listSelector="@drawable/list_row_selector">
+        </ListView>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtview2"
+        android:id="@+id/viewRecipetools"
+        android:layout_marginTop="10dp"
+        android:dividerHeight="1dp"
+        android:divider="@color/list_divider"
+        android:listSelector="@drawable/list_row_selector">
+    </ListView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewRecipetools"
+        android:text="Instructions"
+        android:id="@+id/txtview3"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"/>
+
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewRecipeinstructions"
+        android:layout_below="@+id/txtview3"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:dividerHeight="1dp"
+        android:divider="@color/list_divider"
+        android:listSelector="@drawable/list_row_selector">
+    </ListView>
+
 </RelativeLayout>
