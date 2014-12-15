@@ -21,7 +21,7 @@ public class PostRecipe extends Activity {
     private String recipeName, recipeInstructions, Time;
     private int recipeTime;
     TextView NameTxt, InstructionsTxt, TimeTxt;
-    private ArrayList<String> ingredients;
+    private ArrayList<String> ingredients = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,8 @@ public class PostRecipe extends Activity {
         TextView ST = (TextView) findViewById(R.id.ST)
          */
 
-        NameTxt = (TextView) findViewById(R.id.editRecipeNameTxt);
-        InstructionsTxt = (TextView) findViewById(R.id.editRecipeInstructionsTxt);
+        NameTxt = (TextView) findViewById(R.id.RecipeNameTxt);
+        InstructionsTxt = (TextView) findViewById(R.id.RecipeIngredientsTxt);
         TimeTxt = (TextView) findViewById(R.id.editRecipeTimeTxt);
 
         final Button addIngredients = (Button) findViewById(R.id.RecipeIngredientsBtn);
@@ -77,7 +77,7 @@ public class PostRecipe extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), addIngredients.class);
                 intent.putStringArrayListExtra("List", ingredients);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
     }

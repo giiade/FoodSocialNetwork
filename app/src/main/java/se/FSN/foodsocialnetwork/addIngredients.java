@@ -1,7 +1,6 @@
 package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +17,8 @@ public class addIngredients extends Activity {
     private TextView addThings;
     private Button addBtn;
     private ListView thingsList;
-    private ArrayList<String> things;
+    private ArrayList<String> things = new ArrayList<String>();
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +27,15 @@ public class addIngredients extends Activity {
         addThings = (TextView) findViewById(R.id.ingredInput);
         addBtn = (Button) findViewById(R.id.addBtn);
         thingsList = (ListView) findViewById(R.id.addList);
-        final ArrayAdapter<String> adapter;
+        Bundle extras = getIntent().getExtras();
+        things = extras.getStringArrayList("List");
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
                 things);
+        thingsList.setAdapter(adapter);
 
-        Intent intent = getIntent();
-        things = (ArrayList<String>) intent.getStringArrayListExtra("List").clone();
+        //Intent intent = getIntent();
+        //things = (ArrayList<String>) intent.getStringArrayListExtra("List").clone();
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,9 +44,14 @@ public class addIngredients extends Activity {
                     things.add(addThings.getText().toString());
                     addThings.setText("");
                     adapter.notifyDataSetChanged();
+
                 }
             }
         });
+        /*
+        TODO:
+        Boton saveit debe devolver el resultado a la applicacion principal
+         */
     }
 
 
