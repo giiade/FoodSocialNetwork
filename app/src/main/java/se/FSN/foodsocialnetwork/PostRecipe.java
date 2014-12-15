@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class PostRecipe extends Activity {
@@ -21,7 +22,12 @@ public class PostRecipe extends Activity {
     private String recipeName, recipeInstructions, Time;
     private int recipeTime;
     TextView NameTxt, InstructionsTxt, TimeTxt;
-    private ArrayList<String> ingredients;
+    private ArrayList<HashMap<String, String>> ingredients = new ArrayList<HashMap<String, String>>();
+    private HashMap<String, String> Values = new HashMap<String, String>();
+
+    private final String INAME_KEY = "name";
+    private final String IQUAN_KEY = "quantity";
+    private final String ITYPE_KEY = "type";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +42,8 @@ public class PostRecipe extends Activity {
         TextView ST = (TextView) findViewById(R.id.ST)
          */
 
-        NameTxt = (TextView) findViewById(R.id.editRecipeNameTxt);
-        InstructionsTxt = (TextView) findViewById(R.id.editRecipeInstructionsTxt);
+        NameTxt = (TextView) findViewById(R.id.RecipeNameTxt);
+        InstructionsTxt = (TextView) findViewById(R.id.RecipeIngredientsTxt);
         TimeTxt = (TextView) findViewById(R.id.editRecipeTimeTxt);
 
         final Button addIngredients = (Button) findViewById(R.id.RecipeIngredientsBtn);
@@ -76,8 +82,8 @@ public class PostRecipe extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), addIngredients.class);
-                intent.putStringArrayListExtra("List", ingredients);
-                startActivity(intent);
+                intent.putExtra("List", ingredients);
+                startActivityForResult(intent, 1);
             }
         });
     }
