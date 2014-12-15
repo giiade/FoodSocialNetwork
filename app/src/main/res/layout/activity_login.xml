@@ -37,8 +37,7 @@
         android:layout_alignRight="@+id/emailInput"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/emailTxt"
-        android:hint="Password"
-        android:inputType="textPassword"
+        android:inputType="textWebPassword"
         android:textSize="18sp" />
 
 

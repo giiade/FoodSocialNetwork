@@ -24,7 +24,7 @@ public class Login extends Activity {
     /*TODO:
     Add variables necessary to login. TextViews and Buttons as well as Strings.
     Make the request to the server
-    Save the sessionID.
+    Save the USER AND PASS
      */
 
     //Variables
