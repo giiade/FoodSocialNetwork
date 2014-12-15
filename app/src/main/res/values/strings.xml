@@ -12,4 +12,11 @@
     <string name="title_activity_create_account">createAccount</string>
     <string name="title_activity_add_ingredients">addIngredients</string>
 
+
+    <string-array name="units_array">
+        <item>g</item>
+        <item>ml</item>
+        <item>units</item>
+    </string-array>
+
 </resources>

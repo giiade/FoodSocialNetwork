@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 public class addIngredients extends Activity {
 
     private TextView addThings;
+    private Spinner unitTypeSpn;
     private Button addBtn;
     private ListView thingsList;
     private ArrayList<String> things = new ArrayList<String>();
@@ -24,18 +27,49 @@ public class addIngredients extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_ingredients);
+
         addThings = (TextView) findViewById(R.id.ingredInput);
         addBtn = (Button) findViewById(R.id.addBtn);
         thingsList = (ListView) findViewById(R.id.addList);
+
+        unitTypeSpn = (Spinner) findViewById(R.id.inputTypeSpn);
+
+        ArrayAdapter<CharSequence> spnAdapter = ArrayAdapter.createFromResource(this,
+                R.array.units_array, android.R.layout.simple_spinner_item);
+        spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        unitTypeSpn.setAdapter(spnAdapter);
+
+        unitTypeSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                /*
+                TODO:
+                CREATE A LISTADAPTER FOR DOING THIS.
+
+
+                 */
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         Bundle extras = getIntent().getExtras();
         things = extras.getStringArrayList("List");
+
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
                 things);
+
         thingsList.setAdapter(adapter);
 
         //Intent intent = getIntent();
         //things = (ArrayList<String>) intent.getStringArrayListExtra("List").clone();
+
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
