@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/viewRecipeimage"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignLeft="@+id/txtview2"
+        android:layout_alignStart="@+id/txtview2" />
     
     <TextView
         android:layout_width="wrap_content"
