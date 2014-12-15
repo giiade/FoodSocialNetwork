@@ -19,6 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Quantity"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/isOptionalCheck"
         android:layout_below="@+id/ingredInput"
         android:id="@+id/quantityInput" />
 
@@ -32,11 +34,19 @@
 
     </Spinner>
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/isOptionalCheck"
+        android:text="Is Optional?"
+        android:layout_below="@id/ingredInput"
+        android:layout_alignParentLeft="true" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/addBtn"
-        android:layout_below="@+id/quantityInput"
+        android:layout_below="@+id/inputTypeSpn"
         android:layout_centerHorizontal="true"
         android:text="ADD" />
 

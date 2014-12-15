@@ -5,23 +5,28 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class addIngredients extends Activity {
 
-    private TextView addThings;
+    private TextView addThings, quantityTxt;
     private Spinner unitTypeSpn;
     private Button addBtn;
     private ListView thingsList;
     private ArrayList<String> things = new ArrayList<String>();
-    private ArrayAdapter<String> adapter;
+    private AddIngredientsAdapter adapter;
+    private List<Ingredient> ingredientsList = new ArrayList<Ingredient>();
+    private String title, quantity, inputType;
+    private String optional = "mandatory";
+    private CheckBox isOptionalCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,42 +34,28 @@ public class addIngredients extends Activity {
         setContentView(R.layout.activity_add_ingredients);
 
         addThings = (TextView) findViewById(R.id.ingredInput);
+        quantityTxt = (TextView) findViewById(R.id.quantityInput);
         addBtn = (Button) findViewById(R.id.addBtn);
         thingsList = (ListView) findViewById(R.id.addList);
+        isOptionalCheck = (CheckBox) findViewById(R.id.isOptionalCheck);
 
         unitTypeSpn = (Spinner) findViewById(R.id.inputTypeSpn);
 
-        ArrayAdapter<CharSequence> spnAdapter = ArrayAdapter.createFromResource(this,
+        final ArrayAdapter<CharSequence> spnAdapter = ArrayAdapter.createFromResource(this,
                 R.array.units_array, android.R.layout.simple_spinner_item);
         spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         unitTypeSpn.setAdapter(spnAdapter);
 
-        unitTypeSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                /*
-                TODO:
-                CREATE A LISTADAPTER FOR DOING THIS.
-
-
-                 */
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
 
         Bundle extras = getIntent().getExtras();
         things = extras.getStringArrayList("List");
 
-        adapter = new ArrayAdapter<String>(this,
+        /*adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
                 things);
-
+                */
+        adapter = new AddIngredientsAdapter(this, ingredientsList);
         thingsList.setAdapter(adapter);
 
         //Intent intent = getIntent();
@@ -74,9 +65,26 @@ public class addIngredients extends Activity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
+                TODO:
+                Test empty input
+                 */
+
                 if (addThings.getText().toString() != "") {
-                    things.add(addThings.getText().toString());
+
+                    inputType = unitTypeSpn.getSelectedItem().toString();
+                    title = addThings.getText().toString();
+                    quantity = quantityTxt.getText().toString() + " " + inputType;
+
+                    Ingredient ingredient = new Ingredient();
+                    ingredient.setTitle(title);
+                    ingredient.setQuantity(quantity);
+                    ingredient.setInputType(inputType);
+                    ingredient.setOptional(isOptionalCheck.isChecked());
+                    ingredientsList.add(ingredient);
                     addThings.setText("");
+                    quantityTxt.setText("");
+                    isOptionalCheck.setChecked(false);
                     adapter.notifyDataSetChanged();
 
                 }

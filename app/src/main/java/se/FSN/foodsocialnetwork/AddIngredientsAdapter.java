@@ -51,7 +51,7 @@ public class AddIngredientsAdapter extends BaseAdapter {
 
         TextView title = (TextView) convertView.findViewById(R.id.ingredientTitle);
         TextView quantity = (TextView) convertView.findViewById(R.id.quantity);
-        TextView type = (TextView) convertView.findViewById(R.id.unitType);
+        TextView optional = (TextView) convertView.findViewById(R.id.optionalTxt);
 
         // getting movie data for the row
         Ingredient i = ingredientsItems.get(position);
@@ -62,8 +62,12 @@ public class AddIngredientsAdapter extends BaseAdapter {
         // quantity
         quantity.setText("Quantity: " + i.getQuantity());
 
-        // Input Type
-        type.setText(i.getInputType());
+        //Optional
+        if (i.isOptional()) {
+            optional.setText("Optional");
+        } else {
+            optional.setText("Mandatory");
+        }
 
         return convertView;
     }

@@ -8,14 +8,17 @@ public class Ingredient {
     private String title;
     private String quantity;
     private String inputType;
+    private boolean isOptional;
 
     public Ingredient() {
     }
 
-    public Ingredient(String title, String quantity, String type) {
+    public Ingredient(String title, String quantity, String type, boolean isOptional) {
         this.setTitle(title);
         this.setQuantity(quantity);
         this.setInputType(type);
+        this.setOptional(isOptional);
+        ;
     }
 
 
@@ -41,5 +44,13 @@ public class Ingredient {
 
     public void setInputType(String inputType) {
         this.inputType = inputType;
+    }
+
+    public boolean isOptional() {
+        return isOptional;
+    }
+
+    public void setOptional(boolean isOptional) {
+        this.isOptional = isOptional;
     }
 }
