@@ -19,6 +19,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import se.FSN.foodsocialnetwork.utils.ConstantsClass;
+
 public class Login extends Activity {
 
     /*TODO:
@@ -29,10 +31,6 @@ public class Login extends Activity {
 
     //Variables
     private String urlJsonObj = " http://83.254.221.239:9000/login";
-    String MAIL_KEY = "email";
-    String PASS_KEY = "password";
-    String SUC_KEY = "success";
-    String SESSIONID_KEY = "sessionID";
     private String username, password;
     private boolean login;
     TextView mailText, passText;
@@ -72,17 +70,18 @@ public class Login extends Activity {
     private boolean requestLogin(String user, String pass) {
         login = false;
         //?email=myEmail@email.com&password=pass
-        String URL = urlJsonObj + "?" + MAIL_KEY + "=" + username + "&" + PASS_KEY + "=" + password;
+        String URL = urlJsonObj + "?" + ConstantsClass.MAIL_KEY + "=" + username + "&" + ConstantsClass.PASS_KEY + "=" + password;
         JsonObjectRequest jObjReq = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
-                    if (jsonObject.getBoolean(SUC_KEY)) {
-                        login = jsonObject.getBoolean(SUC_KEY);
-                        sessionID = jsonObject.getString(SESSIONID_KEY);
+                    if (jsonObject.getBoolean(ConstantsClass.SUC_KEY)) {
+                        login = jsonObject.getBoolean(ConstantsClass.SUC_KEY);
+                        sessionID = jsonObject.getString(ConstantsClass.SESSIONID_KEY);
                         //TODO:
                         /*
-                        Save the sessionID for everytime we open the app if we are logged we don't need to relog.
+                        Save the sessionID for Make All the request.
+                        Save the user and password if the checkbox is checked.
                          */
                     }
                 } catch (JSONException e) {

@@ -8,63 +8,63 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="se.FSN.foodsocialnetwork.Login">
 
-    <TextView
-        android:id="@+id/emailTxt"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/passTxt"
-        android:layout_alignTop="@+id/centerPos"
-        android:text="Email:"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:id="@+id/layoutLogin">
 
-    <EditText
-        android:id="@+id/emailInput"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/emailTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:text="Email:" />
+
+        <EditText
+            android:id="@+id/emailInput"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="xxx@xxx.com"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/passTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Password:"
+            android:textColor="@android:color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+
+        <EditText
+            android:id="@+id/passInput"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textWebPassword"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <CheckBox
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/emailTxt"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/emailTxt"
-        android:hint="xxx@xxx.com"
-        android:textSize="18sp" />
+        android:checked="false"
+        android:id="@+id/saveLoginCheck"
+        android:text="Remember login"
+        android:layout_below="@id/layoutLogin" />
 
-    <EditText
-        android:id="@+id/passInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/passTxt"
-        android:layout_alignRight="@+id/emailInput"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/emailTxt"
-        android:inputType="textWebPassword"
-        android:textSize="18sp" />
-
-
-    <TextView
-        android:id="@+id/centerPos"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-
-
-    <TextView
-        android:id="@+id/passTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/emailTxt"
-        android:layout_marginTop="10dp"
-        android:text="Password:"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="bold" />
 
     <Button
         android:id="@+id/loginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/passInput"
+        android:layout_below="@+id/saveLoginCheck"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
         android:text="LOGIN" />
