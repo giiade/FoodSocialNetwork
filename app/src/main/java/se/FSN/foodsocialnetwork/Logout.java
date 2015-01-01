@@ -50,7 +50,6 @@ public class Logout extends Activity {
             logout = true;
 
 
-
         return logout;
     }
 }
