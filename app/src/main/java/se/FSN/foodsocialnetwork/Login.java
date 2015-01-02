@@ -19,7 +19,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import se.FSN.foodsocialnetwork.utils.ConstantsClass;
+import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 
 public class Login extends Activity {
 
@@ -70,14 +70,14 @@ public class Login extends Activity {
     private boolean requestLogin(String user, String pass) {
         login = false;
         //?email=myEmail@email.com&password=pass
-        String URL = urlJsonObj + "?" + ConstantsClass.MAIL_KEY + "=" + username + "&" + ConstantsClass.PASS_KEY + "=" + password;
+        String URL = urlJsonObj + "?" + UsefulFunctions.MAIL_KEY + "=" + username + "&" + UsefulFunctions.PASS_KEY + "=" + password;
         JsonObjectRequest jObjReq = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
-                    if (jsonObject.getBoolean(ConstantsClass.SUC_KEY)) {
-                        login = jsonObject.getBoolean(ConstantsClass.SUC_KEY);
-                        sessionID = jsonObject.getString(ConstantsClass.SESSIONID_KEY);
+                    if (jsonObject.getBoolean(UsefulFunctions.SUC_KEY)) {
+                        login = jsonObject.getBoolean(UsefulFunctions.SUC_KEY);
+                        sessionID = jsonObject.getString(UsefulFunctions.SESSIONID_KEY);
                         //TODO:
                         /*
                         Save the sessionID for Make All the request.

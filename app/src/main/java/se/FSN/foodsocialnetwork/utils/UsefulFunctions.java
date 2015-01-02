@@ -3,7 +3,7 @@ package se.FSN.foodsocialnetwork.utils;
 /**
  * Created by JulioLopez on 30/12/14.
  */
-public class ConstantsClass {
+public class UsefulFunctions {
 
     public static final String MAIL_KEY = "email";
     public static final String PASS_KEY = "password";

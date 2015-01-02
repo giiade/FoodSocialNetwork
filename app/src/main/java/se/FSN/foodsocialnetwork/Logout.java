@@ -1,10 +1,7 @@
 package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 
 
@@ -13,9 +10,14 @@ public class Logout extends Activity {
     private boolean logout;
     String sessionID;
 
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
+
+        /*
+        TODO: We don't need a layout for doing this. it will be just a function.
+         */
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_logout);
+        //setContentView(R.layout.activity_logout);
+/*
 
         Button logoutYes = (Button) findViewById(R.id.logoutYesBtn);
         logoutYes.setOnClickListener(new View.OnClickListener() {
@@ -35,21 +37,22 @@ public class Logout extends Activity {
                 //TODO: go back to the previous activity.
             }
         });
+*/
 
 
     }
 
-    private boolean requestLogout(){
+    /*private boolean requestLogout(){
         logout = false;
 
 
-            /*TODO:delete sessionID
+            *//*TODO:delete sessionID
 
-             */
-            if (/*deleted*/)
+             *//*
+            if (*//*deleted*//*)
             logout = true;
 
 
         return logout;
-    }
+    }*/
 }
