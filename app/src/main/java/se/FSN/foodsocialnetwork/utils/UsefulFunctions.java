@@ -5,10 +5,13 @@ package se.FSN.foodsocialnetwork.utils;
  */
 public class UsefulFunctions {
 
+    public static final String PREFERENCES_KEY = "saves";
     public static final String MAIL_KEY = "email";
     public static final String PASS_KEY = "password";
     public static final String SUC_KEY = "success";
     public static final String SESSIONID_KEY = "sessionID";
+    public static final String LOGED_KEY = "IsLoged";
+    public static final String ERROR_KEY = "error";
 
     private static String SESSIONID;
 

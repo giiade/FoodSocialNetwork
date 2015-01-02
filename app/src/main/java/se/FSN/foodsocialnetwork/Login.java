@@ -1,13 +1,16 @@
 package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,28 +27,36 @@ import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 public class Login extends Activity {
 
     /*TODO:
-    Add variables necessary to login. TextViews and Buttons as well as Strings.
-    Make the request to the server
     Save the USER AND PASS
      */
+
+    SharedPreferences preferences;
 
     //Variables
     private String urlJsonObj = " http://83.254.221.239:9000/login";
     private String username, password;
     private boolean login;
     TextView mailText, passText;
-    String sessionID;
+    CheckBox saveData;
+    private String sessionID, error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         //From here Start Coding
+        //Access to the shared preference file.
+        preferences = getSharedPreferences(UsefulFunctions.PREFERENCES_KEY, Context.MODE_PRIVATE);
+
         mailText = (TextView) findViewById(R.id.emailInput);
         passText = (TextView) findViewById(R.id.passInput);
+        saveData = (CheckBox) findViewById(R.id.saveLoginCheck);
 
         Button loginBtn = (Button) findViewById(R.id.loginBtn);
+        Button registerBtn = (Button) findViewById(R.id.registerBtn);
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,33 +67,62 @@ public class Login extends Activity {
                     if (temp != "") {
                         password = temp;
                         if (requestLogin(username, password) == true) {
+                            //Everything was correct so we go to the main Layout.
                             Intent intent = new Intent(getApplicationContext(), Main.class);
                             startActivity(intent);
+                        } else {
+                            Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT);
                         }
 
-                    } else Log.i("ERROR", "NO PASS");
-                } else Log.i("ERROR", "No User");
+                    } else {
+                        //Toast.makeText(getApplicationContext(),"No password", Toast.LENGTH_SHORT);
+                        Log.i("ERROR", "NO PASS");
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "No user or Pass", Toast.LENGTH_SHORT);
+                    Log.i("ERROR", "No User");
+                }
+            }
+        });
+
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), createAccount.class);
+                startActivity(i);
+                finish();
             }
         });
 
     }
 
-    private boolean requestLogin(String user, String pass) {
+    private boolean requestLogin(String user, final String pass) {
         login = false;
+
         //?email=myEmail@email.com&password=pass
         String URL = urlJsonObj + "?" + UsefulFunctions.MAIL_KEY + "=" + username + "&" + UsefulFunctions.PASS_KEY + "=" + password;
         JsonObjectRequest jObjReq = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
+                    SharedPreferences.Editor editor = preferences.edit();
                     if (jsonObject.getBoolean(UsefulFunctions.SUC_KEY)) {
                         login = jsonObject.getBoolean(UsefulFunctions.SUC_KEY);
                         sessionID = jsonObject.getString(UsefulFunctions.SESSIONID_KEY);
-                        //TODO:
-                        /*
-                        Save the sessionID for Make All the request.
-                        Save the user and password if the checkbox is checked.
-                         */
+                        error = jsonObject.getString(UsefulFunctions.ERROR_KEY);
+
+                        //Save the SessionId for further requests.
+                        editor.putString(UsefulFunctions.SESSIONID_KEY, sessionID);
+
+                        //Checkbox
+                        if (saveData.isChecked()) {
+                            // If the user want to save the login.
+                            //it will test the boolean on the splash screen.
+                            editor.putString(UsefulFunctions.MAIL_KEY, username);
+                            editor.putString(UsefulFunctions.PASS_KEY, password);
+                            editor.putBoolean(UsefulFunctions.LOGED_KEY, true);
+                        }
+
                     }
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(),

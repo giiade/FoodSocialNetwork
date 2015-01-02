@@ -1,7 +1,9 @@
 package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -9,6 +11,8 @@ import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
+
+import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 
 public class Splash extends Activity {
     private static int SPLASH_TIME_OUT = 3000;
@@ -35,12 +39,20 @@ public class Splash extends Activity {
             @Override
             public void onAnimationEnd(Animation animation) {
 
+                SharedPreferences preferences = getSharedPreferences(UsefulFunctions.PREFERENCES_KEY, Context.MODE_PRIVATE);
+
                 //TODO:
                 /*
                 If we have a sessionID to main
                 If not, to login
                  */
-                Intent i = new Intent(Splash.this, Main.class);
+                Intent i;
+                if (preferences.getBoolean(UsefulFunctions.LOGED_KEY, false)) {
+                    i = new Intent(getApplicationContext(), Login.class);
+                } else {
+                    i = new Intent(Splash.this, Main.class);
+                }
+
                 startActivity(i);
                 finish();
             }
