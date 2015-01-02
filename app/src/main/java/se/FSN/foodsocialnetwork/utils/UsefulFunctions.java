@@ -5,6 +5,8 @@ package se.FSN.foodsocialnetwork.utils;
  */
 public class UsefulFunctions {
 
+    public static final String LOGIN_URL = "http://83.254.221.239:9000/login";
+
     public static final String PREFERENCES_KEY = "saves";
     public static final String MAIL_KEY = "email";
     public static final String PASS_KEY = "password";

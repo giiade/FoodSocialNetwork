@@ -11,6 +11,15 @@ import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 
@@ -18,6 +27,7 @@ public class Splash extends Activity {
     private static int SPLASH_TIME_OUT = 3000;
     Animation fadeOut;
     RelativeLayout splashLay;
+    SharedPreferences preferences = getSharedPreferences(UsefulFunctions.PREFERENCES_KEY, Context.MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +49,6 @@ public class Splash extends Activity {
             @Override
             public void onAnimationEnd(Animation animation) {
 
-                SharedPreferences preferences = getSharedPreferences(UsefulFunctions.PREFERENCES_KEY, Context.MODE_PRIVATE);
 
                 //TODO:
                 /*
@@ -48,9 +57,11 @@ public class Splash extends Activity {
                  */
                 Intent i;
                 if (preferences.getBoolean(UsefulFunctions.LOGED_KEY, false)) {
-                    i = new Intent(getApplicationContext(), Login.class);
+                    i = new Intent(getApplicationContext(), Main.class);
+                    requestLogin();
                 } else {
-                    i = new Intent(Splash.this, Main.class);
+                    i = new Intent(Splash.this, Login.class);
+
                 }
 
                 startActivity(i);
@@ -99,4 +110,40 @@ public class Splash extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void requestLogin() {
+        String username = preferences.getString(UsefulFunctions.MAIL_KEY, "Null");
+        String password = preferences.getString(UsefulFunctions.PASS_KEY, "1234");
+
+        //?email=myEmail@email.com&password=pass
+        String URL = UsefulFunctions.LOGIN_URL + "?" + UsefulFunctions.MAIL_KEY + "=" + username + "&" + UsefulFunctions.PASS_KEY + "=" + password;
+        JsonObjectRequest jObjReq = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                try {
+                    String sessionID;
+                    SharedPreferences.Editor editor = preferences.edit();
+                    if (jsonObject.getBoolean(UsefulFunctions.SUC_KEY)) {
+                        sessionID = jsonObject.getString(UsefulFunctions.SESSIONID_KEY);
+                        //Save the SessionId for further requests.
+                        editor.putString(UsefulFunctions.SESSIONID_KEY, sessionID);
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+
+
+    }
+
+
 }
