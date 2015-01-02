@@ -26,9 +26,6 @@ import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 
 public class Login extends Activity {
 
-    /*TODO:
-    Save the USER AND PASS
-     */
 
     SharedPreferences preferences;
 
