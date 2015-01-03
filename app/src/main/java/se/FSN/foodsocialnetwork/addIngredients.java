@@ -23,10 +23,13 @@ public class addIngredients extends Activity {
     private ListView thingsList;
     private ArrayList<String> things = new ArrayList<String>();
     private AddIngredientsAdapter adapter;
+    private ArrayAdapter<String> toolAdapter;
     private List<Ingredient> ingredientsList = new ArrayList<Ingredient>();
+    private List<String> toolsList = new ArrayList<String>();
     private String title, quantity, inputType;
     private String optional = "mandatory";
     private CheckBox isOptionalCheck;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,58 +41,99 @@ public class addIngredients extends Activity {
         addBtn = (Button) findViewById(R.id.addBtn);
         thingsList = (ListView) findViewById(R.id.addList);
         isOptionalCheck = (CheckBox) findViewById(R.id.isOptionalCheck);
-
         unitTypeSpn = (Spinner) findViewById(R.id.inputTypeSpn);
+        int type;
 
+        //ADAPTER FOR SPINNER
         final ArrayAdapter<CharSequence> spnAdapter = ArrayAdapter.createFromResource(this,
                 R.array.units_array, android.R.layout.simple_spinner_item);
+
         spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         unitTypeSpn.setAdapter(spnAdapter);
 
-
-
         Bundle extras = getIntent().getExtras();
         things = extras.getStringArrayList("List");
+        type = extras.getInt("Type");
 
         /*adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
                 things);
                 */
         adapter = new AddIngredientsAdapter(this, ingredientsList);
-        thingsList.setAdapter(adapter);
 
-        //Intent intent = getIntent();
-        //things = (ArrayList<String>) intent.getStringArrayListExtra("List").clone();
+        if (type == 0) {
+            //We are going to add tools
+            isOptionalCheck.setVisibility(View.GONE);
+            unitTypeSpn.setVisibility(View.GONE);
+            quantityTxt.setVisibility(View.GONE);
 
-
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            toolAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, toolsList);
+            thingsList.setAdapter(toolAdapter);
+            addBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                 /*
                 TODO:
                 Test empty input
                  */
 
-                if (addThings.getText().toString() != "") {
+                    if (addThings.getText().toString() != "") {
 
-                    inputType = unitTypeSpn.getSelectedItem().toString();
-                    title = addThings.getText().toString();
-                    quantity = quantityTxt.getText().toString() + " " + inputType;
 
-                    Ingredient ingredient = new Ingredient();
-                    ingredient.setTitle(title);
-                    ingredient.setQuantity(quantity);
-                    ingredient.setInputType(inputType);
-                    ingredient.setOptional(isOptionalCheck.isChecked());
-                    ingredientsList.add(ingredient);
-                    addThings.setText("");
-                    quantityTxt.setText("");
-                    isOptionalCheck.setChecked(false);
-                    adapter.notifyDataSetChanged();
+                        title = addThings.getText().toString();
 
+                        toolsList.add(title);
+                        addThings.setText("");
+                        adapter.notifyDataSetChanged();
+
+                    }
                 }
-            }
-        });
+            });
+
+
+        } else {
+            //We are going to add Ingredients
+            isOptionalCheck.setVisibility(View.VISIBLE);
+            unitTypeSpn.setVisibility(View.VISIBLE);
+            quantityTxt.setVisibility(View.VISIBLE);
+
+            thingsList.setAdapter(adapter);
+            addBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                /*
+                TODO:
+                Test empty input
+                 */
+
+                    if (addThings.getText().toString() != "") {
+
+                        inputType = unitTypeSpn.getSelectedItem().toString();
+                        title = addThings.getText().toString();
+                        quantity = quantityTxt.getText().toString() + " " + inputType;
+
+                        Ingredient ingredient = new Ingredient();
+                        ingredient.setTitle(title);
+                        ingredient.setQuantity(quantity);
+                        ingredient.setInputType(inputType);
+                        ingredient.setOptional(isOptionalCheck.isChecked());
+                        ingredientsList.add(ingredient);
+                        addThings.setText("");
+                        quantityTxt.setText("");
+                        isOptionalCheck.setChecked(false);
+                        adapter.notifyDataSetChanged();
+
+                    }
+                }
+            });
+        }
+
+
+        //Intent intent = getIntent();
+        //things = (ArrayList<String>) intent.getStringArrayListExtra("List").clone();
+
+
+
         /*
         TODO:
         Boton saveit debe devolver el resultado a la applicacion principal

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import se.FSN.foodsocialnetwork.utils.AppController;
 import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 
 public class Login extends Activity {
@@ -47,7 +49,7 @@ public class Login extends Activity {
         //Access to the shared preference file.
         preferences = getSharedPreferences(UsefulFunctions.PREFERENCES_KEY, Context.MODE_PRIVATE);
 
-        mailText = (TextView) findViewById(R.id.emailInput);
+        mailText = (EditText) findViewById(R.id.emailInput);
         passText = (TextView) findViewById(R.id.passInput);
         saveData = (CheckBox) findViewById(R.id.saveLoginCheck);
 
@@ -58,26 +60,19 @@ public class Login extends Activity {
             @Override
             public void onClick(View v) {
                 String temp = mailText.getText().toString();
-                if (temp != "") {
+                if (mailText.getText().length() > 0) {
                     username = temp;
                     temp = passText.getText().toString();
-                    if (temp != "") {
+                    if (passText.getText().length() > 0) {
                         password = temp;
-                        if (requestLogin(username, password) == true) {
-                            //Everything was correct so we go to the main Layout.
-                            Intent intent = new Intent(getApplicationContext(), Main.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT);
-                        }
-
+                        requestLogin(username, password);
                     } else {
                         //Toast.makeText(getApplicationContext(),"No password", Toast.LENGTH_SHORT);
-                        Log.i("ERROR", "NO PASS");
+                        Log.d("ERROR", "NO PASS");
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "No user or Pass", Toast.LENGTH_SHORT);
-                    Log.i("ERROR", "No User");
+                    Toast.makeText(getApplicationContext(), "No user or Pass", Toast.LENGTH_SHORT).show();
+                    Log.d("ERROR", "No User");
                 }
             }
         });
@@ -87,14 +82,14 @@ public class Login extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), createAccount.class);
                 startActivity(i);
-                finish();
+
             }
         });
 
     }
 
-    private boolean requestLogin(String user, final String pass) {
-        login = false;
+    private void requestLogin(String user, final String pass) {
+
 
         //?email=myEmail@email.com&password=pass
         String URL = urlJsonObj + "?" + UsefulFunctions.MAIL_KEY + "=" + username + "&" + UsefulFunctions.PASS_KEY + "=" + password;
@@ -102,11 +97,13 @@ public class Login extends Activity {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
+                    Log.d("URL", jsonObject.toString());
+                    error = jsonObject.getString(UsefulFunctions.ERROR_KEY);
                     SharedPreferences.Editor editor = preferences.edit();
                     if (jsonObject.getBoolean(UsefulFunctions.SUC_KEY)) {
                         login = jsonObject.getBoolean(UsefulFunctions.SUC_KEY);
                         sessionID = jsonObject.getString(UsefulFunctions.SESSIONID_KEY);
-                        error = jsonObject.getString(UsefulFunctions.ERROR_KEY);
+
 
                         //Save the SessionId for further requests.
                         editor.putString(UsefulFunctions.SESSIONID_KEY, sessionID);
@@ -119,6 +116,15 @@ public class Login extends Activity {
                             editor.putString(UsefulFunctions.PASS_KEY, password);
                             editor.putBoolean(UsefulFunctions.LOGED_KEY, true);
                         }
+
+                        editor.commit();
+                        Intent intent = new Intent(getApplicationContext(), Main.class);
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+
+                        Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
 
                     }
                 } catch (JSONException e) {
@@ -134,8 +140,8 @@ public class Login extends Activity {
 
             }
         });
+        AppController.getInstance().addToRequestQueue(jObjReq);
 
-        return login;
     }
 
 

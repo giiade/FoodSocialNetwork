@@ -1,8 +1,9 @@
 package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
-import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,35 +24,27 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
+
 
 public class PostRecipe extends Activity {
 
-    //TODO:
-    //ADD VARIABLES HERE AS PRIVATE OR WHAT YOU WANT.
-    //No define them here. just declare.
+    /*
+    TODO:
+    Pasar los ingredientes a la actividad
+    Pasar las herramientas a la actividad
+    Gestionar el return de la actividad al crear receta.
+     */
+
     private String recipeName, recipeInstructions, Time;
     private int recipeTime;
     TextView NameTxt, InstructionsTxt, TimeTxt;
     private ArrayList<HashMap<String, String>> ingredients = new ArrayList<HashMap<String, String>>();
+    private ArrayList<String> tools = new ArrayList<String>();
     private HashMap<String, String> Values = new HashMap<String, String>();
 
-    private final String INAME_KEY = "name";
-    private final String IQUAN_KEY = "quantity";
-    private final String ITYPE_KEY = "type";
 
     private String urlJsonObject = " http://83.254.221.239:9000/createRecepie";
-    String TITLE_KEY = "title";
-    String INSTRUCTION_KEY = "instruction";
-    String TIME_KEY = "time";
-    String SESSIONID_KEY = "sessionID";
-    String CATEGORY_KEY = "category";
-    String IMAGE_KEY = "image";
-    String INGREDIENT_KEY = "ingredients";
-    String OPTIONAL_KEY = "isOptional";
-    String AMOUNT_KEY = "amount";
-    String AMOUNTTYPE_KEY = "amountType";
-    String TOOLS_KEY = "tools";
-    String SUC_KEY = "success";
     private boolean post;
 
     @Override
@@ -59,13 +52,6 @@ public class PostRecipe extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_recipe);
 
-        /*
-        TODO:
-        Define the variables and make the methods that we will need.
-        In this case we will use a button, and some TextViews.
-        The declaration of textview will be like
-        TextView ST = (TextView) findViewById(R.id.ST)
-         */
 
         NameTxt = (TextView) findViewById(R.id.RecipeNameTxt);
         InstructionsTxt = (TextView) findViewById(R.id.RecipeIngredientsTxt);
@@ -73,7 +59,9 @@ public class PostRecipe extends Activity {
 
         final Button addIngredients = (Button) findViewById(R.id.RecipeIngredientsBtn);
         Button addTools = (Button) findViewById(R.id.RecipeToolsBtn);
-        //On clicking these buttons new pages should be opened.
+
+
+        //POST RECIPE FUNCTION
         Button postRecipeBtn = (Button) findViewById(R.id.PostRecipeBtn);
         postRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,31 +77,46 @@ public class PostRecipe extends Activity {
                         if (temp != 0) {
                             recipeTime = temp;
 
-                            //TODO:
-                            //Create the method forc it.
-                            postRecipe(recipeName,recipeInstructions,recipeTime);
-                            //should also pass ingredients and tools..
+
+                            postRecipe(recipeName, recipeInstructions, recipeTime);
+
                             Intent intent = new Intent(getApplicationContext(), Main.class);
                             startActivity(intent);
                             finish();
                         } else Log.i("ERROR", "No time");
                     } else Log.i("ERROR", "NO instructions");
-                } else Log.i("ERROR", "No name");
+                } else {
+                    Toast.makeText(getApplicationContext(), "Something was wrong..", Toast.LENGTH_SHORT);
+                    Log.i("ERROR", "No name");
+                }
 
             }
         });
 
+        //ADD INGREDIENTS FUNCTION
         addIngredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), addIngredients.class);
                 intent.putExtra("List", ingredients);
+                intent.putExtra("Type", 1);
                 startActivityForResult(intent, 1);
             }
         });
+
+        //ADD TOOLS FUNCTION
+        addTools.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), addIngredients.class);
+                intent.putExtra("List", tools);
+                intent.putExtra("Type", 0);
+                startActivityForResult(intent, 1);
+            }
+        }));
     }
 
-    public void postRecipe(String recipeName, String recipeInstructions, int recipeTime){
+    public void postRecipe(String recipeName, String recipeInstructions, int recipeTime) {
     /*
     TODO:
     Request for post the recipe.
@@ -122,32 +125,39 @@ public class PostRecipe extends Activity {
     ingredients and tools should be passed to this function.
 
      */
+
+        SharedPreferences preferences = getSharedPreferences(UsefulFunctions.PREFERENCES_KEY, Context.MODE_PRIVATE);
         post = false;
         String ingredientsarray = "";
-        String tools = "";
-        String URL = urlJsonObject + "?" + SESSIONID_KEY + "=" + sessionID + "&" + TITLE_KEY + "=" + recipeName + "&" + INSTRUCTION_KEY + "=" + recipeInstructions + "&" + TIME_KEY + "=" + recipeTime + "&" + CATEGORY_KEY + "=" + category + "&" + IMAGE_KEY + "=" + image + "&" + INGREDIENT_KEY + "=" + ingredientsarray + "&" + TOOLS_KEY + "=" tools;
+
+        String URL = urlJsonObject + "?" + UsefulFunctions.SESSIONID_KEY + "=" + preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000") + "&"
+                + UsefulFunctions.TITLE_KEY + "=" + recipeName + "&" + UsefulFunctions.INSTRUCTION_KEY + "="
+                + recipeInstructions + "&" + UsefulFunctions.TIME_KEY + "=" + recipeTime + "&"
+                + UsefulFunctions.CATEGORY_KEY + "=" + "Food" + "&" + UsefulFunctions.IMAGE_KEY + "=" + "blank" + "&"
+                + UsefulFunctions.INGREDIENT_KEY + "=" + ingredientsarray.toString()
+                + "&" + UsefulFunctions.TOOLS_KEY + "=" + tools.toString();
+
         JsonObjectRequest jObjReq = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                try{
-                    if(jsonObject.getBoolean(SUC_KEY)){
-                        post = jsonObject.getBoolean(SUC_KEY);
+                try {
+                    if (jsonObject.getBoolean(UsefulFunctions.SUC_KEY)) {
+                        post = jsonObject.getBoolean(UsefulFunctions.SUC_KEY);
 
                     }
-                }catch (JSONException e) {
+                } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(),
                             "Error: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
 
                 }
             }
-        },new Response.ErrorListener() {
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
 
             }
         });
-
 
 
     }

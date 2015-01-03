@@ -2,6 +2,7 @@ package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,12 +15,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -28,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import se.FSN.foodsocialnetwork.utils.AppController;
+import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 
 public class createAccount extends Activity {
 
@@ -70,8 +74,10 @@ public class createAccount extends Activity {
                             if (passTxt.getText().toString().length() > 3) {
                                 pass = passTxt.getText().toString().trim();
                                 MakeCreateAccountRequest(username, mail, countryCode, pass);
+                                requestLogin(mail, pass);
                                 Intent intent = new Intent(getApplicationContext(), Main.class);
                                 startActivity(intent);
+                                finish();
                             } else Log.i("ERROR", "Pass Too Short");
                         } else Log.i("ERROR", "No Pass");
                     } else Log.i("ERROR", "No Mail");
@@ -121,13 +127,8 @@ public class createAccount extends Activity {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("URL", response.toString());
-                /*
-                TODO:
-                If the createAccount return true statement we should directly login and go to
-                the main layout.
-                - Text if it true.
-                - If it's true go to main layout.
-                 */
+                Toast.makeText(getApplicationContext(),
+                        "Account created succesfully", Toast.LENGTH_SHORT).show();
 
 
             }
@@ -144,6 +145,43 @@ public class createAccount extends Activity {
 
 
         AppController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    private void requestLogin(String username, String password) {
+        final SharedPreferences preferences = getSharedPreferences(UsefulFunctions.PREFERENCES_KEY, MODE_PRIVATE);
+
+
+        //?email=myEmail@email.com&password=pass
+        String URL = UsefulFunctions.LOGIN_URL + "?" + UsefulFunctions.MAIL_KEY + "=" + username + "&" + UsefulFunctions.PASS_KEY + "=" + password;
+        JsonObjectRequest jObjReq = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                try {
+                    Log.d("URL", jsonObject.toString());
+                    String sessionID;
+                    SharedPreferences.Editor editor = preferences.edit();
+                    if (jsonObject.getBoolean(UsefulFunctions.SUC_KEY)) {
+                        sessionID = jsonObject.getString(UsefulFunctions.SESSIONID_KEY);
+                        //Save the SessionId for further requests.
+                        editor.putString(UsefulFunctions.SESSIONID_KEY, sessionID);
+                        editor.commit();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        AppController.getInstance().addToRequestQueue(jObjReq);
+
+
     }
 
 
