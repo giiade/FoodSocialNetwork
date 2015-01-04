@@ -53,11 +53,6 @@ public class Splash extends Activity {
             public void onAnimationEnd(Animation animation) {
 
 
-                //TODO:
-                /*
-                If we have a sessionID to main
-                If not, to login
-                 */
                 Intent i;
                 if (preferences.getBoolean(UsefulFunctions.LOGED_KEY, false)) {
                     i = new Intent(getApplicationContext(), Main.class);
@@ -124,7 +119,7 @@ public class Splash extends Activity {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
-                    Log.d("URL", jsonObject.toString());
+                    Log.d("URL " + Splash.class.toString(), jsonObject.toString());
                     String sessionID;
                     SharedPreferences.Editor editor = preferences.edit();
                     if (jsonObject.getBoolean(UsefulFunctions.SUC_KEY)) {

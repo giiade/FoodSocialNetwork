@@ -27,13 +27,15 @@
             android:label="@string/title_activity_login" />
         <activity
             android:name=".PostRecipe"
-            android:label="@string/title_activity_post_recipe" />
+            android:label="@string/title_activity_post_recipe"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Main"
             android:label="@string/title_activity_create_account" />
         <activity
             android:name=".addIngredients"
-            android:label="@string/title_activity_add_ingredients"></activity>
+            android:label="@string/title_activity_add_ingredients"
+            android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
 </manifest>

@@ -126,7 +126,7 @@ public class createAccount extends Activity {
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("URL", response.toString());
+                Log.d("URL " + createAccount.class.toString(), response.toString());
                 Toast.makeText(getApplicationContext(),
                         "Account created succesfully", Toast.LENGTH_SHORT).show();
 

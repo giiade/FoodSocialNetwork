@@ -60,7 +60,7 @@ public class AddIngredientsAdapter extends BaseAdapter {
         title.setText(i.getTitle());
 
         // quantity
-        quantity.setText("Quantity: " + i.getQuantity());
+        quantity.setText("Quantity: " + i.getQuantity() + " " + i.getInputType());
 
         //Optional
         if (i.isOptional()) {

@@ -16,14 +16,17 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import se.FSN.foodsocialnetwork.utils.AppController;
 import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 
 
@@ -39,12 +42,12 @@ public class PostRecipe extends Activity {
     private String recipeName, recipeInstructions, Time;
     private int recipeTime;
     TextView NameTxt, InstructionsTxt, TimeTxt;
-    private ArrayList<HashMap<String, String>> ingredients = new ArrayList<HashMap<String, String>>();
+    private ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
     private ArrayList<String> tools = new ArrayList<String>();
     private HashMap<String, String> Values = new HashMap<String, String>();
 
 
-    private String urlJsonObject = " http://83.254.221.239:9000/createRecepie";
+    private String urlJsonObject = UsefulFunctions.CRECIPE_URL;
     private boolean post;
 
     @Override
@@ -54,7 +57,7 @@ public class PostRecipe extends Activity {
 
 
         NameTxt = (TextView) findViewById(R.id.RecipeNameTxt);
-        InstructionsTxt = (TextView) findViewById(R.id.RecipeIngredientsTxt);
+        InstructionsTxt = (TextView) findViewById(R.id.rInstrucTxt);
         TimeTxt = (TextView) findViewById(R.id.editRecipeTimeTxt);
 
         final Button addIngredients = (Button) findViewById(R.id.RecipeIngredientsBtn);
@@ -98,9 +101,9 @@ public class PostRecipe extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), addIngredients.class);
-                intent.putExtra("List", ingredients);
+                intent.putExtra(UsefulFunctions.INTENTLIST_KEY, ingredients);
                 intent.putExtra("Type", 1);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, 2);
             }
         });
 
@@ -109,14 +112,29 @@ public class PostRecipe extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), addIngredients.class);
-                intent.putExtra("List", tools);
+                intent.putExtra(UsefulFunctions.INTENTLIST_KEY, tools);
                 intent.putExtra("Type", 0);
                 startActivityForResult(intent, 1);
             }
         }));
     }
 
-    public void postRecipe(String recipeName, String recipeInstructions, int recipeTime) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                Bundle extra = data.getExtras();
+                tools = (ArrayList<String>) extra.get(UsefulFunctions.INTENTLIST_KEY);
+            }
+        } else {
+            if (resultCode == RESULT_OK) {
+                Bundle extra = data.getExtras();
+                ingredients = (ArrayList<Ingredient>) extra.get(UsefulFunctions.INTENTLIST_KEY);
+            }
+        }
+
+    }
+
+    private void postRecipe(String recipeName, String recipeInstructions, int recipeTime) {
     /*
     TODO:
     Request for post the recipe.
@@ -127,39 +145,56 @@ public class PostRecipe extends Activity {
      */
 
         SharedPreferences preferences = getSharedPreferences(UsefulFunctions.PREFERENCES_KEY, Context.MODE_PRIVATE);
-        post = false;
-        String ingredientsarray = "";
+        try {
+            recipeName = URLEncoder.encode(recipeName, "UTF-8");
+            recipeInstructions = URLEncoder.encode(recipeInstructions, "UTF-8");
 
-        String URL = urlJsonObject + "?" + UsefulFunctions.SESSIONID_KEY + "=" + preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000") + "&"
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+        String url = urlJsonObject + "?" + UsefulFunctions.SESSIONID_KEY + "=" + preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000") + "&"
                 + UsefulFunctions.TITLE_KEY + "=" + recipeName + "&" + UsefulFunctions.INSTRUCTION_KEY + "="
                 + recipeInstructions + "&" + UsefulFunctions.TIME_KEY + "=" + recipeTime + "&"
-                + UsefulFunctions.CATEGORY_KEY + "=" + "Food" + "&" + UsefulFunctions.IMAGE_KEY + "=" + "blank" + "&"
-                + UsefulFunctions.INGREDIENT_KEY + "=" + ingredientsarray.toString()
-                + "&" + UsefulFunctions.TOOLS_KEY + "=" + tools.toString();
+                + UsefulFunctions.CATEGORY_KEY + "=" + "2" + "&" + UsefulFunctions.IMAGE_KEY + "=" + "blank" + "&"
+                + UsefulFunctions.INGREDIENT_KEY + "=" + ingredients.toString()
+                + "&" + UsefulFunctions.TOOLS_KEY + "=" + tools.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+        Log.d("URL", url);
 
-        JsonObjectRequest jObjReq = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
+
             @Override
-            public void onResponse(JSONObject jsonObject) {
-                try {
-                    if (jsonObject.getBoolean(UsefulFunctions.SUC_KEY)) {
-                        post = jsonObject.getBoolean(UsefulFunctions.SUC_KEY);
+            public void onResponse(JSONObject response) {
+                Log.d("URL", response.toString());
 
-                    }
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(),
-                            "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                /*
+                TODO:
+                Do something with the result. GO to main
+                Add Image
+                Add Categories.Further release, We need to have data to make the categories.
+                 */
 
-                }
+                // http://83.254.221.239:9000/createRecepie?sessionID=7afdb348-559f-4ac4-b486-ad7cac9ad04e&title=hola+caraco&instruction=gt+gg+hy&time=2&category=Food&image=blank&ingredient=[{name: "ttt", isOptional: true, amount: 52, amountType: "grams"}, {name: "xft", isOptional: false, amount: 23, amountType: "grams"}]&tools=teefjk
+                //Toast.makeText(getApplicationContext(),
+                //      "Account created succesfully", Toast.LENGTH_SHORT).show();
+
+
             }
         }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
-
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("ERROR", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
+        }
+        );
 
 
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
 

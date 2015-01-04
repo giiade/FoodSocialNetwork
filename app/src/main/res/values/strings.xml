@@ -14,7 +14,7 @@
 
 
     <string-array name="units_array">
-        <item>g</item>
+        <item>grams</item>
         <item>ml</item>
         <item>units</item>
     </string-array>

@@ -97,7 +97,7 @@ public class Login extends Activity {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
-                    Log.d("URL", jsonObject.toString());
+                    Log.d("URL " + Login.class.toString(), jsonObject.toString());
                     error = jsonObject.getString(UsefulFunctions.ERROR_KEY);
                     SharedPreferences.Editor editor = preferences.edit();
                     if (jsonObject.getBoolean(UsefulFunctions.SUC_KEY)) {

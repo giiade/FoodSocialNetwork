@@ -1,7 +1,9 @@
 package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,11 +17,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
+
 public class addIngredients extends Activity {
 
     private TextView addThings, quantityTxt;
     private Spinner unitTypeSpn;
-    private Button addBtn;
+    private Button addBtn, saveBtn;
     private ListView thingsList;
     private ArrayList<String> things = new ArrayList<String>();
     private AddIngredientsAdapter adapter;
@@ -39,10 +43,11 @@ public class addIngredients extends Activity {
         addThings = (TextView) findViewById(R.id.ingredInput);
         quantityTxt = (TextView) findViewById(R.id.quantityInput);
         addBtn = (Button) findViewById(R.id.addBtn);
+        saveBtn = (Button) findViewById(R.id.saveBtn);
         thingsList = (ListView) findViewById(R.id.addList);
         isOptionalCheck = (CheckBox) findViewById(R.id.isOptionalCheck);
         unitTypeSpn = (Spinner) findViewById(R.id.inputTypeSpn);
-        int type;
+        final int type;
 
         //ADAPTER FOR SPINNER
         final ArrayAdapter<CharSequence> spnAdapter = ArrayAdapter.createFromResource(this,
@@ -52,16 +57,18 @@ public class addIngredients extends Activity {
         unitTypeSpn.setAdapter(spnAdapter);
 
         Bundle extras = getIntent().getExtras();
-        things = extras.getStringArrayList("List");
+
         type = extras.getInt("Type");
 
         /*adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
                 things);
                 */
+        ingredientsList = (ArrayList<Ingredient>) extras.get(UsefulFunctions.INTENTLIST_KEY);
         adapter = new AddIngredientsAdapter(this, ingredientsList);
 
         if (type == 0) {
+            toolsList = (ArrayList<String>) extras.get(UsefulFunctions.INTENTLIST_KEY);
             //We are going to add tools
             isOptionalCheck.setVisibility(View.GONE);
             unitTypeSpn.setVisibility(View.GONE);
@@ -93,6 +100,8 @@ public class addIngredients extends Activity {
 
         } else {
             //We are going to add Ingredients
+
+
             isOptionalCheck.setVisibility(View.VISIBLE);
             unitTypeSpn.setVisibility(View.VISIBLE);
             quantityTxt.setVisibility(View.VISIBLE);
@@ -110,7 +119,7 @@ public class addIngredients extends Activity {
 
                         inputType = unitTypeSpn.getSelectedItem().toString();
                         title = addThings.getText().toString();
-                        quantity = quantityTxt.getText().toString() + " " + inputType;
+                        quantity = quantityTxt.getText().toString();
 
                         Ingredient ingredient = new Ingredient();
                         ingredient.setTitle(title);
@@ -133,10 +142,28 @@ public class addIngredients extends Activity {
         //things = (ArrayList<String>) intent.getStringArrayListExtra("List").clone();
 
 
-
+        //Save data Function.
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent returnIntent = addIngredients.this.getIntent();
+                if (type == 0) {
+                    //We return the Tool array
+                    returnIntent.putStringArrayListExtra(UsefulFunctions.INTENTLIST_KEY, (ArrayList<String>) toolsList);
+                    Log.e("HOLO", toolsList.toString());
+                } else {
+                    //We return the ingredient array
+                    returnIntent.putExtra(UsefulFunctions.INTENTLIST_KEY, (ArrayList<Ingredient>) ingredientsList);
+                    Log.e("HOLO", ingredientsList.toString());
+                }
+                addIngredients.this.setResult(RESULT_OK, returnIntent);
+                finish();
+            }
+        });
         /*
         TODO:
-        Boton saveit debe devolver el resultado a la applicacion principal
+        on click en lista nos dice que hay que hacer click largo para eliminar el item
+        On long click para eliminar.
          */
     }
 
