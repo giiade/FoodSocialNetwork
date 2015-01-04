@@ -1,6 +1,8 @@
 package se.FSN.foodsocialnetwork;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 
@@ -61,12 +63,18 @@ public class Ingredient implements Serializable {
     @Override
     public String toString() {
         StringBuilder text = new StringBuilder();
+        String title = new String();
+        try {
+            title = URLEncoder.encode(this.getTitle(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         text.append("{");
-        text.append(UsefulFunctions.INGREDIENTNAME_KEY + ": " + '"' + this.getTitle() + '"' + ", ");
-        text.append(UsefulFunctions.OPTIONAL_KEY + ": " + this.isOptional() + ", ");
-        text.append(UsefulFunctions.AMOUNT_KEY + ": " + this.getQuantity() + ", ");
-        text.append(UsefulFunctions.AMOUNTTYPE_KEY + ": " + '"' + this.getInputType() + '"');
+        text.append(UsefulFunctions.INGREDIENTNAME_KEY + ":" + '"' + title + '"' + ",");
+        text.append(UsefulFunctions.OPTIONAL_KEY + ":" + this.isOptional() + ",");
+        text.append(UsefulFunctions.AMOUNT_KEY + ":" + this.getQuantity() + ",");
+        text.append(UsefulFunctions.AMOUNTTYPE_KEY + ":" + '"' + this.getInputType() + '"');
         text.append("}");
         return text.toString();
     }

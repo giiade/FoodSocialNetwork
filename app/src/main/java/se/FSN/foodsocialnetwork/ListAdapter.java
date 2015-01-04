@@ -24,7 +24,7 @@ public class ListAdapter extends BaseAdapter {
     private List<Recipe> recipeItems;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
-    public void CustomListAdapter(Activity activity, List<Recipe> recipeItems) {
+    public ListAdapter(Activity activity, List<Recipe> recipeItems) {
         this.activity = activity;
         this.recipeItems = recipeItems;
     }
@@ -59,31 +59,29 @@ public class ListAdapter extends BaseAdapter {
         TextView title = (TextView) convertView.findViewById(R.id.recipeTitle);
         TextView category = (TextView) convertView.findViewById(R.id.category);
         TextView difficult = (TextView) convertView.findViewById(R.id.difficult);
-        //TextView year = (TextView) convertView.findViewById(R.id.releaseYear);
 
         // getting movie data for the row
         Recipe r = recipeItems.get(position);
 
         // thumbnail image
-        thumbNail.setImageUrl(r.getImageurl(), imageLoader);
+        //thumbNail.setImageUrl(r.getImageurl(), imageLoader);
 
         // title
         title.setText(r.getTitle());
 
         // difficult
-        category.setText(String.valueOf(r.getTime()));
+        //category.setText(String.valueOf(r.getTime()));
 
         // Category
-        String catStr = "";
+        /*String catStr = "";
         for (String str : r.getCategories()) {
             catStr += str + ", ";
         }
         catStr = catStr.length() > 0 ? catStr.substring(0,
                 catStr.length() - 2) : catStr;
         category.setText(catStr);
+        */
 
-        // release year
-        //year.setText(String.valueOf(m.getYear()));
 
         return convertView;
     }

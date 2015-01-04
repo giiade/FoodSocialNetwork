@@ -36,7 +36,7 @@
         android:layout_below="@+id/searchText"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="2dp"
-        android:text="Tittle"
+        android:text="Recipes"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ListView

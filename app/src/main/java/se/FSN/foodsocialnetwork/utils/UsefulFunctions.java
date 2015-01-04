@@ -6,10 +6,16 @@ package se.FSN.foodsocialnetwork.utils;
 public class UsefulFunctions {
 
     public static final String LOGIN_URL = "http://83.254.221.239:9000/login";
-    public static final String CRECIPE_URL = " http://83.254.221.239:9000/createRecipe";
+    public static final String CRECIPE_URL = "http://83.254.221.239:9000/createRecipe";
+    public static final String LOGOUT_URL = "http://83.254.221.239:9000/logout";
+    public static final String SHOWALL_URL = "http://83.254.221.239:9000/showAll";
+
+    public static final String RECIPEARRAY_KEY = "recipes";
+    public static final String RECIPETITLE_KEY = "recipeTitle";
+    public static final String CREATOR_KEY = "creator";
 
     public static final String PREFERENCES_KEY = "saves";
-    public static final String ID_KEY = "id";
+    public static final String ID_KEY = "recipeID";
     public static final String MAIL_KEY = "email";
     public static final String PASS_KEY = "password";
     public static final String SUC_KEY = "success";

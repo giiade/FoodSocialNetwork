@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -83,9 +84,7 @@ public class PostRecipe extends Activity {
 
                             postRecipe(recipeName, recipeInstructions, recipeTime);
 
-                            Intent intent = new Intent(getApplicationContext(), Main.class);
-                            startActivity(intent);
-                            finish();
+
                         } else Log.i("ERROR", "No time");
                     } else Log.i("ERROR", "NO instructions");
                 } else {
@@ -145,10 +144,11 @@ public class PostRecipe extends Activity {
      */
 
         SharedPreferences preferences = getSharedPreferences(UsefulFunctions.PREFERENCES_KEY, Context.MODE_PRIVATE);
+        String toolToSend = "";
         try {
             recipeName = URLEncoder.encode(recipeName, "UTF-8");
             recipeInstructions = URLEncoder.encode(recipeInstructions, "UTF-8");
-
+            toolToSend = URLEncoder.encode(printTools(tools), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -159,7 +159,7 @@ public class PostRecipe extends Activity {
                 + recipeInstructions + "&" + UsefulFunctions.TIME_KEY + "=" + recipeTime + "&"
                 + UsefulFunctions.CATEGORY_KEY + "=" + "2" + "&" + UsefulFunctions.IMAGE_KEY + "=" + "blank" + "&"
                 + UsefulFunctions.INGREDIENT_KEY + "=" + ingredients.toString()
-                + "&" + UsefulFunctions.TOOLS_KEY + "=" + tools.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                + "&" + UsefulFunctions.TOOLS_KEY + "=" + toolToSend;
         Log.d("URL", url);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -168,6 +168,17 @@ public class PostRecipe extends Activity {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("URL", response.toString());
+
+                try {
+                    if (response.getBoolean(UsefulFunctions.SUC_KEY)) {
+                        Toast.makeText(getApplicationContext(), "Recipe Created", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), Main.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 /*
                 TODO:
@@ -218,5 +229,16 @@ public class PostRecipe extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String printTools(ArrayList<String> tools) {
+        StringBuilder result = new StringBuilder();
+        for (String tool : tools) {
+            result.append(tool);
+            result.append(",");
+        }
+        result.deleteCharAt(result.length() - 1);
+
+        return result.toString();
     }
 }

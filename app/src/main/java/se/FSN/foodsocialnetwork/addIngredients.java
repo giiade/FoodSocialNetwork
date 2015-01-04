@@ -25,13 +25,11 @@ public class addIngredients extends Activity {
     private Spinner unitTypeSpn;
     private Button addBtn, saveBtn;
     private ListView thingsList;
-    private ArrayList<String> things = new ArrayList<String>();
     private AddIngredientsAdapter adapter;
     private ArrayAdapter<String> toolAdapter;
     private List<Ingredient> ingredientsList = new ArrayList<Ingredient>();
     private List<String> toolsList = new ArrayList<String>();
     private String title, quantity, inputType;
-    private String optional = "mandatory";
     private CheckBox isOptionalCheck;
 
 
@@ -79,19 +77,14 @@ public class addIngredients extends Activity {
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                /*
-                TODO:
-                Test empty input
-                 */
 
                     if (addThings.getText().toString() != "") {
-
 
                         title = addThings.getText().toString();
 
                         toolsList.add(title);
                         addThings.setText("");
-                        adapter.notifyDataSetChanged();
+                        toolAdapter.notifyDataSetChanged();
 
                     }
                 }

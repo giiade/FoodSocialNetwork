@@ -6,7 +6,9 @@ import java.util.ArrayList;
  * This class will be used to provide Recipe Objects to the ListView after parsing the Json.
  */
 public class Recipe {
+    private String ID;
     private String title;
+    private String creator;
     private String imageurl;
     private int time;
     private ArrayList<String> ingredients;
@@ -14,8 +16,15 @@ public class Recipe {
     private String description;
     private ArrayList<String> categories;
 
-    public Recipe(String name, String image, int time, ArrayList<String> ingredients, ArrayList<String> tools, String description, ArrayList<String> categories) {
+    public Recipe() {
+    }
+
+    ;
+
+    public Recipe(String ID, String name, String creator, String image, int time, ArrayList<String> ingredients, ArrayList<String> tools, String description, ArrayList<String> categories) {
+        this.setID(ID);
         this.setTitle(name);
+        this.setCreator(creator);
         this.setImageurl(image);
         this.setTime(time);
         this.setIngredients(ingredients);
@@ -78,5 +87,21 @@ public class Recipe {
 
     public void setCategories(ArrayList<String> categories) {
         this.categories = categories;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }
