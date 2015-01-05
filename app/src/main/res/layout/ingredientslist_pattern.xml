@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ingredientTitle"
         android:layout_marginTop="1dp"
-        android:layout_toRightOf="@+id/ingredientTitle"
+        android:layout_marginLeft="15dp"
         android:layout_marginRight="5dp"
         android:textSize="18sp"
         android:text="5"

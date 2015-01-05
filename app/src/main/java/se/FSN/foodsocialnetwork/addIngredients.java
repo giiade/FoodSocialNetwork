@@ -7,12 +7,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,11 +155,32 @@ public class addIngredients extends Activity {
                 finish();
             }
         });
-        /*
-        TODO:
-        on click en lista nos dice que hay que hacer click largo para eliminar el item
-        On long click para eliminar.
-         */
+
+        //OnItemClick Function
+        thingsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), "Long Click for delete", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        //OnLongItemClick Function
+        thingsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (type == 0) {
+                    //Tools
+                    toolsList.remove(position);
+                    toolAdapter.notifyDataSetChanged();
+                } else {
+                    ingredientsList.remove(position);
+                    adapter.notifyDataSetChanged();
+                }
+                return false;
+            }
+        });
+
     }
 
 
