@@ -46,7 +46,7 @@ public class Splash extends Activity {
         fadeOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                //nothing
+                requestLogin();
             }
 
             @Override
@@ -56,7 +56,6 @@ public class Splash extends Activity {
                 Intent i;
                 if (preferences.getBoolean(UsefulFunctions.LOGED_KEY, false)) {
                     i = new Intent(getApplicationContext(), Main.class);
-                    requestLogin();
                 } else {
                     i = new Intent(Splash.this, Login.class);
 

@@ -1,5 +1,12 @@
 package se.FSN.foodsocialnetwork.utils;
 
+import android.content.Context;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import se.FSN.foodsocialnetwork.R;
+
 /**
  * Created by JulioLopez on 30/12/14.
  */
@@ -9,10 +16,15 @@ public class UsefulFunctions {
     public static final String CRECIPE_URL = "http://83.254.221.239:9000/createRecipe";
     public static final String LOGOUT_URL = "http://83.254.221.239:9000/logout";
     public static final String SHOWALL_URL = "http://83.254.221.239:9000/showAll";
+    public static final String SINGLERECIPE_URL = "http://83.254.221.239:9000/recipe/";
 
     public static final String RECIPEARRAY_KEY = "recipes";
     public static final String RECIPETITLE_KEY = "recipeTitle";
     public static final String CREATOR_KEY = "creator";
+    public static final String INGREDIENTARRAY_KEY = "ingridients";
+    public static final String RECIPEREQUEST_KEY = "recipe";
+    public static final String RECIPEIDREQUEST_KEY = "id";
+    public static final String RECIPEINTRUCTIONS_KEY = "instructions";
 
     public static final String PREFERENCES_KEY = "saves";
     public static final String ID_KEY = "recipeID";
@@ -39,16 +51,25 @@ public class UsefulFunctions {
     public static final String TOOLS_KEY = "tools";
 
 
-    private static String SESSIONID;
-
-
-    public String getSessionId() {
-        return SESSIONID;
+    public static void slide_down(Context context, View v) {
+        Animation a = AnimationUtils.loadAnimation(context, R.anim.slidedown);
+        if (a != null) {
+            a.reset();
+            if (v != null) {
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
     }
 
-    public void setSessionId(String sessionId) {
-        SESSIONID = sessionId;
-
-
+    public static void slide_up(Context context, View v) {
+        Animation a = AnimationUtils.loadAnimation(context, R.anim.slideup);
+        if (a != null) {
+            a.reset();
+            if (v != null) {
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
     }
 }

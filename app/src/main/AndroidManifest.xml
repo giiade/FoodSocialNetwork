@@ -35,7 +35,10 @@
         <activity
             android:name=".addIngredients"
             android:label="@string/title_activity_add_ingredients"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ShowSingleRecipe"
+            android:label="Recipes" />
     </application>
 
 </manifest>

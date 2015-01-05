@@ -11,7 +11,7 @@ public class Recipe {
     private String creator;
     private String imageurl;
     private int time;
-    private ArrayList<String> ingredients;
+    private ArrayList<Ingredient> ingredients;
     private ArrayList<String> tools;
     private String description;
     private ArrayList<String> categories;
@@ -21,7 +21,7 @@ public class Recipe {
 
     ;
 
-    public Recipe(String ID, String name, String creator, String image, int time, ArrayList<String> ingredients, ArrayList<String> tools, String description, ArrayList<String> categories) {
+    public Recipe(String ID, String name, String creator, String image, int time, ArrayList<Ingredient> ingredients, ArrayList<String> tools, String description, ArrayList<String> categories) {
         this.setID(ID);
         this.setTitle(name);
         this.setCreator(creator);
@@ -55,14 +55,6 @@ public class Recipe {
 
     public void setTime(int time) {
         this.time = time;
-    }
-
-    public ArrayList<String> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(ArrayList<String> ingredients) {
-        this.ingredients = ingredients;
     }
 
     public ArrayList<String> getTools() {
@@ -103,5 +95,13 @@ public class Recipe {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public ArrayList<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(ArrayList<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -50,6 +51,15 @@ public class Main extends Activity {
 
 
         requestAllRecipes(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"));
+
+        recipeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(getApplicationContext(), ShowSingleRecipe.class);
+                i.putExtra(UsefulFunctions.ID_KEY, recipes.get(position).getID());
+                startActivity(i);
+            }
+        });
 
 
 

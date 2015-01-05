@@ -8,9 +8,14 @@
     <string name="text_activity_splash">Meat people with us.</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_post_recipe">PostRecipe</string>
-    <string name="example_recipe">Preheat oven to 425 degrees F (220 degrees C)...</string>
+    <string name="example_recipe">Preheat oven to 425 degrees F (220 degrees C)&#8230;</string>
     <string name="title_activity_create_account">createAccount</string>
     <string name="title_activity_add_ingredients">addIngredients</string>
+
+    <string name="SingleTimeTitle">Time :</string>
+    <string name="SingleIngredientTitle">Ingredients</string>
+    <string name="SingleInstructionsTitle">Instructions</string>
+    <string name="SingleToolTitle">Tools</string>
 
 
     <string-array name="units_array">

@@ -6,11 +6,24 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Titulo" parent="@android:style/TextAppearance.DeviceDefault.Large">
-        <item name="android:textStyle">bold</item>
+    <style name="Titulo" parent="@android:style/TextAppearance.Large">
+    <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">20sp</item>
 
     </style>
+
+    <style name="Subtitle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/Dark_Blue</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:layout_marginLeft">20dp</item>
+    </style>
+
+    <style name="Body" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 
 </resources>

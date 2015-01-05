@@ -7,7 +7,9 @@ import java.net.URLEncoder;
 import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 
 /**
- * Created by JulioLopez on 15/12/14.
+ * Class use to handle the ingredients.
+ * It contains String title;String quantity;
+ * String inputType; Boolean isOptional;
  */
 public class Ingredient implements Serializable {
 
@@ -19,6 +21,12 @@ public class Ingredient implements Serializable {
     public Ingredient() {
     }
 
+    /**
+     * @param title      String containing the name of the ingredient.
+     * @param quantity   String containing a number.
+     * @param type       String Containing the type
+     * @param isOptional Boolean that show if is optional(true) or is mandatory(False)
+     */
     public Ingredient(String title, String quantity, String type, boolean isOptional) {
         this.setTitle(title);
         this.setQuantity(quantity);

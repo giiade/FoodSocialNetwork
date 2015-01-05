@@ -8,4 +8,6 @@
     <color name="list_row_hover_start_color">#ebeef0</color>
     <color name="list_row_hover_end_color">#ebeef0</color>
 
+    <color name="Dark_Blue">#160B6F</color>
+
 </resources>
