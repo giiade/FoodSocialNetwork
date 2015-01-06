@@ -17,6 +17,9 @@ public class UsefulFunctions {
     public static final String LOGOUT_URL = "http://83.254.221.239:9000/logout";
     public static final String SHOWALL_URL = "http://83.254.221.239:9000/showAll";
     public static final String SINGLERECIPE_URL = "http://83.254.221.239:9000/recipe/";
+    public static final String REQUESTIMAGE_URL = "http://83.254.221.239:9000/recipePicture/";
+    public static final String FAVREQUEST_URL = "http://83.254.221.239:9000/addFavorite";
+    public static final String UNFAVREQUEST_URL = "http://83.254.221.239:9000/deleteFavorite";
 
     public static final String RECIPEARRAY_KEY = "recipes";
     public static final String RECIPETITLE_KEY = "recipeTitle";
@@ -36,6 +39,7 @@ public class UsefulFunctions {
     public static final String ERROR_KEY = "error";
 
     public static final String INTENTLIST_KEY = "list";
+    public static final String FAVIDS_KEY = "favoriteid";
 
 
     public static final String TITLE_KEY = "title";

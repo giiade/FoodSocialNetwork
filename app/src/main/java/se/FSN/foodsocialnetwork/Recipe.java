@@ -9,7 +9,7 @@ public class Recipe {
     private String ID;
     private String title;
     private String creator;
-    private String imageurl;
+    private byte[] imageArray;
     private int time;
     private ArrayList<Ingredient> ingredients;
     private ArrayList<String> tools;
@@ -19,13 +19,12 @@ public class Recipe {
     public Recipe() {
     }
 
-    ;
 
-    public Recipe(String ID, String name, String creator, String image, int time, ArrayList<Ingredient> ingredients, ArrayList<String> tools, String description, ArrayList<String> categories) {
+    public Recipe(String ID, String name, String creator, byte[] image, int time, ArrayList<Ingredient> ingredients, ArrayList<String> tools, String description, ArrayList<String> categories) {
         this.setID(ID);
         this.setTitle(name);
         this.setCreator(creator);
-        this.setImageurl(image);
+        this.setImageArray(image);
         this.setTime(time);
         this.setIngredients(ingredients);
         this.setTools(tools);
@@ -39,14 +38,6 @@ public class Recipe {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getImageurl() {
-        return imageurl;
-    }
-
-    public void setImageurl(String imageurl) {
-        this.imageurl = imageurl;
     }
 
     public int getTime() {
@@ -103,5 +94,13 @@ public class Recipe {
 
     public void setIngredients(ArrayList<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public byte[] getImageArray() {
+        return imageArray;
+    }
+
+    public void setImageArray(byte[] imageArray) {
+        this.imageArray = imageArray;
     }
 }

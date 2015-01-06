@@ -6,6 +6,17 @@
     android:layout_height="match_parent">
 
 
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/RecipeFavoriteButton"
+        android:src="@drawable/star_off"
+        android:scaleType="fitXY"
+        android:background="#00FFFFFF"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
+
+
     <TextView
         android:id="@+id/singleRName"
         android:layout_width="wrap_content"
@@ -60,7 +71,7 @@
             <TextView
                 android:id="@+id/singleRIngredientsTitle"
                 style="@style/Subtitle"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/SingleIngredientTitle"
                 android:textAppearance="@style/Subtitle"
@@ -84,7 +95,7 @@
             <TextView
                 android:id="@+id/singleRToolsTitle"
                 style="@style/Subtitle"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/SingleToolTitle"
                 android:textAppearance="@style/Subtitle"
@@ -108,7 +119,7 @@
             <TextView
                 android:id="@+id/singleRInstructionsTitle"
                 style="@style/Subtitle"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/SingleInstructionsTitle"
                 android:textAppearance="@style/Subtitle"

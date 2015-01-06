@@ -2,9 +2,11 @@ package se.FSN.foodsocialnetwork;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,13 +14,16 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import se.FSN.foodsocialnetwork.utils.AppController;
 import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
@@ -27,10 +32,17 @@ import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 public class ShowSingleRecipe extends Activity {
 
     private SharedPreferences preferences;
-    private TextView timeTxt, ingredientsTxt, toolsTxt, instructionsTxt, titleTxt;
+    private TextView timeTxt, titleTxt;
     private TextView ingredientsBodyTxt, toolsBodyTxt, instructionsBodyTxt;
-    private String timeStr;
+    private NetworkImageView imageView;
+    private ImageButton imgButton;
+    private String timeStr, id;
     private Recipe recipe;
+
+    private ArrayList<String> myFavIDS = new ArrayList<String>();
+
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+
 
 
     @Override
@@ -42,32 +54,158 @@ public class ShowSingleRecipe extends Activity {
 
         timeTxt = (TextView) findViewById(R.id.singleRTime);
         titleTxt = (TextView) findViewById(R.id.singleRName);
-        ingredientsTxt = (TextView) findViewById(R.id.singleRIngredientsBody);
-        toolsTxt = (TextView) findViewById(R.id.singleRToolsBody);
-        instructionsTxt = (TextView) findViewById(R.id.singleRInstructionsBody);
+        imageView = (NetworkImageView) findViewById(R.id.singleRImage);
 
         instructionsBodyTxt = (TextView) findViewById(R.id.singleRInstructionsBody);
         ingredientsBodyTxt = (TextView) findViewById(R.id.singleRIngredientsBody);
         toolsBodyTxt = (TextView) findViewById(R.id.singleRToolsBody);
 
+        imgButton = (ImageButton) findViewById(R.id.RecipeFavoriteButton);
+
 
         recipe = new Recipe();
+        Resources res = getResources();
+
+
+        myFavIDS = convertToArray(preferences.getString(UsefulFunctions.FAVIDS_KEY, null));
+
 
         Bundle extras = getIntent().getExtras();
-        String id = extras.getString(UsefulFunctions.ID_KEY);
+        id = extras.getString(UsefulFunctions.ID_KEY);
+
+
+        if (myFavIDS.contains(id)) {
+            Log.e("MOLA", id);
+            imgButton.setImageDrawable(res.getDrawable(R.drawable.star_on));
+        } else {
+            imgButton.setImageDrawable(res.getDrawable(R.drawable.star_off));
+        }
+
 
         RequestRecipe(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), id);
+        //requestImage(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), id);
 
-        toolsTxt.setOnClickListener(new View.OnClickListener() {
+
+        imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toolsBodyTxt.setVisibility(toolsBodyTxt.isShown()
-                        ? View.GONE
-                        : View.VISIBLE);
+                Resources res = getResources();
+
+                if (myFavIDS != null) {
+                    if (myFavIDS.contains(id)) {
+                        unfavRequest(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), id);
+                        imgButton.setImageDrawable(res.getDrawable(R.drawable.star_off));
+                    } else {
+                        favRequest(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), id);
+                        imgButton.setImageDrawable(res.getDrawable(R.drawable.star_on));
+                    }
+                } else {
+
+                    myFavIDS = new ArrayList<String>();
+                    favRequest(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), id);
+                    imgButton.setImageDrawable(res.getDrawable(R.drawable.star_on));
+                }
+
             }
         });
 
     }
+
+    private void favRequest(String sessionID, String id) {
+
+        String url = UsefulFunctions.FAVREQUEST_URL + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID
+                + "&" + UsefulFunctions.ID_KEY + "=" + id;
+
+        Log.d("URL_FAV", url);
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    if (response.getBoolean(UsefulFunctions.SUC_KEY)) {
+                        Toast.makeText(getApplicationContext(),
+                                recipe.getTitle() + " added to Favorites", Toast.LENGTH_SHORT).show();
+                        String id = recipe.getID();
+                        myFavIDS.add(id);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(UsefulFunctions.FAVIDS_KEY, convertToString(myFavIDS));
+                        editor.commit();
+                    } else {
+                        String id = recipe.getID();
+                        myFavIDS.add(id);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(UsefulFunctions.FAVIDS_KEY, convertToString(myFavIDS));
+                        editor.commit();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("ERROR", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
+    }
+
+    private void unfavRequest(String sessionID, String id) {
+
+        String url = UsefulFunctions.UNFAVREQUEST_URL + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID
+                + "&" + UsefulFunctions.ID_KEY + "=" + id;
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    if (response.getBoolean(UsefulFunctions.SUC_KEY)) {
+                        Toast.makeText(getApplicationContext(),
+                                recipe.getTitle() + " deleted from Favorites", Toast.LENGTH_SHORT).show();
+                        myFavIDS.remove(recipe.getID());
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(UsefulFunctions.FAVIDS_KEY, convertToString(myFavIDS));
+                        editor.commit();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("ERROR", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
+    }
+
+
+
 
     public void onInstructionClick(View v) {
         if (instructionsBodyTxt.isShown()) {
@@ -165,17 +303,74 @@ public class ShowSingleRecipe extends Activity {
                         //Add data to the Layout
 
                         titleTxt.setText(recipe.getTitle());
-                        ingredientsTxt.setText(printIngredients(recipe.getIngredients()));
-                        toolsTxt.setText(printTools(recipe.getTools()));
+                        ingredientsBodyTxt.setText(printIngredients(recipe.getIngredients()));
+                        toolsBodyTxt.setText(printTools(recipe.getTools()));
                         timeStr = timeTxt.getText().toString();
                         timeTxt.setText(timeStr + recipe.getTime() + " minutes.");
-                        instructionsTxt.setText(recipe.getDescription());
+                        instructionsBodyTxt.setText(recipe.getDescription());
 
+
+                        if (imageLoader == null)
+                            imageLoader = AppController.getInstance().getImageLoader();
+                        String url = "http://img4.wikia.nocookie.net/__cb20130819001030/lego/images/a/ac/No-Image-Basic.png";
+
+                        imageView.setImageUrl(url, imageLoader);
 
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("ERROR", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
+    }
+
+    private void requestImage(String sessionID, String id) {
+
+        String url = UsefulFunctions.REQUESTIMAGE_URL + id + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID;
+
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                /*try {
+
+                    if (response.length() > 0) {
+
+                        byte[] array = (byte[]) response.get(UsefulFunctions.IMAGE_KEY);
+                        Bitmap bmp = BitmapFactory.decodeByteArray(array,0,array.length);
+
+                        //Add data to the Layout
+
+                        imageView.setImageBitmap(bmp);
+
+
+                    }else{
+                        if (imageLoader == null)
+                            imageLoader = AppController.getInstance().getImageLoader();
+                        String url = "http://img4.wikia.nocookie.net/__cb20130819001030/lego/images/a/ac/No-Image-Basic.png";
+
+                        imageView.setImageUrl(url,imageLoader);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
 
             }
         }, new Response.ErrorListener() {
@@ -227,5 +422,25 @@ public class ShowSingleRecipe extends Activity {
         }
 
         return result.toString();
+    }
+
+    private String convertToString(ArrayList<String> list) {
+        StringBuilder result = new StringBuilder();
+        for (String item : list) {
+            result.append(item);
+            result.append(",");
+        }
+        result.deleteCharAt(result.length() - 1);
+
+        return result.toString();
+    }
+
+    private ArrayList<String> convertToArray(String item) {
+        if (item != null) {
+            ArrayList<String> list = new ArrayList<String>(Arrays.asList(item.split(",")));
+            return list;
+        } else {
+            return null;
+        }
     }
 }
