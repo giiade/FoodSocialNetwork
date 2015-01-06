@@ -30,6 +30,11 @@ public class ListAdapter extends BaseAdapter {
         this.recipeItems = recipeItems;
     }
 
+    public void swapItems(List<Recipe> items) {
+        this.recipeItems = items;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return recipeItems.size();

@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,6 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +40,7 @@ public class Main extends Activity {
     private ListAdapter adapter;
     private ListView recipeList;
     private List<Recipe> recipes = new ArrayList<Recipe>();
+    private EditText searchString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,8 @@ public class Main extends Activity {
         setContentView(R.layout.activity_main);
 
         preferences = getSharedPreferences(UsefulFunctions.PREFERENCES_KEY, MODE_PRIVATE);
+
+        searchString = (EditText) findViewById(R.id.searchText);
 
         //LIST
         recipeList = (ListView) findViewById(R.id.recipeList);
@@ -70,6 +77,27 @@ public class Main extends Activity {
                 Intent intent = new Intent(getApplicationContext(),PostRecipe.class);
                 startActivity(intent);
             }
+        });
+
+        ImageButton searchBTN = (ImageButton) findViewById(R.id.searchBtn);
+        searchBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tagToSearch = new String();
+                if (searchString.length() > 0) {
+                    try {
+                        tagToSearch = URLEncoder.encode(searchString.getText().toString(), "UTF8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    tagToSearch = "";
+                }
+                requestSearch(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), tagToSearch);
+            }
+
+
         });
     }
 
@@ -173,9 +201,6 @@ public class Main extends Activity {
 
                 try {
 
-                 /*
-                TODO: Do something with the result.
-                 */
 
                     if (response.getBoolean(UsefulFunctions.SUC_KEY)) {
                         JSONArray jsonRecipes = null;
@@ -193,6 +218,65 @@ public class Main extends Activity {
                             //Add the recipe object to the array
                             recipes.add(recipe);
                             adapter.notifyDataSetChanged();
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("ERROR", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
+
+    }
+
+
+    private void requestSearch(String sessionID, String tag) {
+        Boolean favorites = false;
+        String url = UsefulFunctions.SEARCHREQUEST_URL + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID
+                + "&" + UsefulFunctions.SEARCHTAG_KEY + "=" + tag
+                + "&" + UsefulFunctions.FAVORITETAG + "=" + false;
+        Log.d("URL_SEARCH", url);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("URL_SEARCH", response.toString());
+
+                try {
+
+
+                    if (response.getBoolean(UsefulFunctions.SUC_KEY)) {
+                        JSONArray jsonRecipes = null;
+                        jsonRecipes = response.getJSONArray(UsefulFunctions.RECIPEARRAY_KEY);
+
+                        List<Recipe> auxList = new ArrayList<Recipe>();
+
+                        for (int i = 0; i < jsonRecipes.length(); i++) {
+                            //We create a Recipe Object
+                            Recipe recipe = new Recipe();
+                            //We create a JsonObject that will contain the data of this recipe
+                            JSONObject jRecipe = (JSONObject) jsonRecipes.get(i);
+                            //We pass the data to the recipe object
+                            recipe.setID(jRecipe.getString(UsefulFunctions.ID_KEY));
+                            recipe.setTitle(jRecipe.getString(UsefulFunctions.RECIPETITLE_KEY));
+                            //Add the recipe object to the array
+                            auxList.add(recipe);
+                            adapter.swapItems(auxList);
                         }
 
                     }

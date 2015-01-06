@@ -20,6 +20,7 @@ public class UsefulFunctions {
     public static final String REQUESTIMAGE_URL = "http://83.254.221.239:9000/recipePicture/";
     public static final String FAVREQUEST_URL = "http://83.254.221.239:9000/addFavorite";
     public static final String UNFAVREQUEST_URL = "http://83.254.221.239:9000/deleteFavorite";
+    public static final String SEARCHREQUEST_URL = "http://83.254.221.239:9000/searchRecipe";
 
     public static final String RECIPEARRAY_KEY = "recipes";
     public static final String RECIPETITLE_KEY = "recipeTitle";
@@ -27,7 +28,8 @@ public class UsefulFunctions {
     public static final String INGREDIENTARRAY_KEY = "ingridients";
     public static final String RECIPEREQUEST_KEY = "recipe";
     public static final String RECIPEIDREQUEST_KEY = "id";
-    public static final String RECIPEINTRUCTIONS_KEY = "instructions";
+    public static final String SEARCHTAG_KEY = "searchString";
+    public static final String FAVORITETAG = "favorites";
 
     public static final String PREFERENCES_KEY = "saves";
     public static final String ID_KEY = "recipeID";
