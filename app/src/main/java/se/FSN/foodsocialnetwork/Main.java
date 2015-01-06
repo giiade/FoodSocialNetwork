@@ -115,6 +115,8 @@ public class Main extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
+        //TODO: Finish the menu and actions of it.
+
         switch (item.getItemId()) {
             case R.id.mnuLogOut:
                 Log.i("MENU" + Main.class.toString(), "LOGOUT");
@@ -189,7 +191,7 @@ public class Main extends Activity {
 
     }
 
-    private void requestAllRecipes(String sessionID) {
+    private void requestAllRecipes(final String sessionID) {
         String url = UsefulFunctions.SHOWALL_URL + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID;
         Log.d("URL_SHOWALL", url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -215,6 +217,7 @@ public class Main extends Activity {
                             recipe.setID(jRecipe.getString(UsefulFunctions.ID_KEY));
                             recipe.setTitle(jRecipe.getString(UsefulFunctions.RECIPETITLE_KEY));
                             recipe.setCreator(jRecipe.getString(UsefulFunctions.CREATOR_KEY));
+                            recipe.setImageUrl(UsefulFunctions.createImageURL(sessionID, recipe.getID()));
                             //Add the recipe object to the array
                             recipes.add(recipe);
                             adapter.notifyDataSetChanged();
@@ -244,7 +247,7 @@ public class Main extends Activity {
     }
 
 
-    private void requestSearch(String sessionID, String tag) {
+    private void requestSearch(final String sessionID, String tag) {
         Boolean favorites = false;
         String url = UsefulFunctions.SEARCHREQUEST_URL + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID
                 + "&" + UsefulFunctions.SEARCHTAG_KEY + "=" + tag
@@ -274,6 +277,7 @@ public class Main extends Activity {
                             //We pass the data to the recipe object
                             recipe.setID(jRecipe.getString(UsefulFunctions.ID_KEY));
                             recipe.setTitle(jRecipe.getString(UsefulFunctions.RECIPETITLE_KEY));
+                            recipe.setImageUrl(UsefulFunctions.createImageURL(sessionID, recipe.getID()));
                             //Add the recipe object to the array
                             auxList.add(recipe);
                             adapter.swapItems(auxList);

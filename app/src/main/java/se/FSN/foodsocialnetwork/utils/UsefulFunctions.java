@@ -55,6 +55,7 @@ public class UsefulFunctions {
     public static final String AMOUNT_KEY = "amount";
     public static final String AMOUNTTYPE_KEY = "amountType";
     public static final String TOOLS_KEY = "tools";
+    public static final String IMG_KEY = "img";
 
 
     public static void slide_down(Context context, View v) {
@@ -77,5 +78,15 @@ public class UsefulFunctions {
                 v.startAnimation(a);
             }
         }
+    }
+
+    public static String createImageURL(String sessionID, String recipeID) {
+        StringBuilder result = new StringBuilder();
+        result.append(REQUESTIMAGE_URL);
+        result.append(recipeID + "?");
+        result.append(SESSIONID_KEY);
+        result.append("=" + sessionID);
+
+        return result.toString();
     }
 }

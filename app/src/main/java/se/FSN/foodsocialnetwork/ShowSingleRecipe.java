@@ -75,7 +75,6 @@ public class ShowSingleRecipe extends Activity {
 
 
         if (myFavIDS.contains(id)) {
-            Log.e("MOLA", id);
             imgButton.setImageDrawable(res.getDrawable(R.drawable.star_on));
         } else {
             imgButton.setImageDrawable(res.getDrawable(R.drawable.star_off));
@@ -166,6 +165,7 @@ public class ShowSingleRecipe extends Activity {
 
         String url = UsefulFunctions.UNFAVREQUEST_URL + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID
                 + "&" + UsefulFunctions.ID_KEY + "=" + id;
+        Log.d("URL_UNFAV", url);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null, new Response.Listener<JSONObject>() {
@@ -237,9 +237,9 @@ public class ShowSingleRecipe extends Activity {
         }
     }
 
-    private void RequestRecipe(String sessionID, String ID) {
+    private void RequestRecipe(final String sessionID, String ID) {
 
-        String url = UsefulFunctions.SINGLERECIPE_URL + ID + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID;
+        final String url = UsefulFunctions.SINGLERECIPE_URL + ID + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID;
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null, new Response.Listener<JSONObject>() {
@@ -292,6 +292,7 @@ public class ShowSingleRecipe extends Activity {
                         //Handle recipe as Title and instructions.
                         JSONObject jRecipe = (JSONObject) response.get(UsefulFunctions.RECIPEREQUEST_KEY);
 
+
                         recipe.setTitle(jRecipe.getString(UsefulFunctions.RECIPETITLE_KEY));
                         recipe.setID(jRecipe.getString(UsefulFunctions.RECIPEIDREQUEST_KEY));
                         recipe.setDescription(jRecipe.getString(UsefulFunctions.INSTRUCTION_KEY));
@@ -299,6 +300,7 @@ public class ShowSingleRecipe extends Activity {
                         recipe.setCreator(jRecipe.getString(UsefulFunctions.CREATOR_KEY));
                         recipe.setIngredients(ingredients);
                         recipe.setTools(tools);
+                        recipe.setImageUrl(UsefulFunctions.createImageURL(sessionID, recipe.getID()));
 
                         //Add data to the Layout
 
@@ -309,10 +311,17 @@ public class ShowSingleRecipe extends Activity {
                         timeTxt.setText(timeStr + recipe.getTime() + " minutes.");
                         instructionsBodyTxt.setText(recipe.getDescription());
 
+                        String img = jRecipe.getString(UsefulFunctions.IMG_KEY);
 
                         if (imageLoader == null)
                             imageLoader = AppController.getInstance().getImageLoader();
-                        String url = "http://img4.wikia.nocookie.net/__cb20130819001030/lego/images/a/ac/No-Image-Basic.png";
+                        String url = "";
+                        if (img.length() > 0) {
+                            url = recipe.getImageUrl();
+                            Log.i("URLIMAGE", url);
+                        } else {
+                            url = "http://img4.wikia.nocookie.net/__cb20130819001030/lego/images/a/ac/No-Image-Basic.png";
+                        }
 
                         imageView.setImageUrl(url, imageLoader);
 
@@ -338,56 +347,7 @@ public class ShowSingleRecipe extends Activity {
 
     }
 
-    private void requestImage(String sessionID, String id) {
 
-        String url = UsefulFunctions.REQUESTIMAGE_URL + id + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID;
-
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                url, null, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-                /*try {
-
-                    if (response.length() > 0) {
-
-                        byte[] array = (byte[]) response.get(UsefulFunctions.IMAGE_KEY);
-                        Bitmap bmp = BitmapFactory.decodeByteArray(array,0,array.length);
-
-                        //Add data to the Layout
-
-                        imageView.setImageBitmap(bmp);
-
-
-                    }else{
-                        if (imageLoader == null)
-                            imageLoader = AppController.getInstance().getImageLoader();
-                        String url = "http://img4.wikia.nocookie.net/__cb20130819001030/lego/images/a/ac/No-Image-Basic.png";
-
-                        imageView.setImageUrl(url,imageLoader);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("ERROR", "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-        );
-
-
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
-
-    }
 
     private String printIngredients(ArrayList<Ingredient> ingredients) {
         StringBuilder result = new StringBuilder();
