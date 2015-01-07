@@ -46,7 +46,9 @@ public class ListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return position;
+        Recipe r = recipeItems.get(position);
+        Long id = Long.valueOf(r.getID());
+        return id;
     }
 
     @Override

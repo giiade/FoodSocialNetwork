@@ -20,9 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name:"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textAppearance="@style/Titulo" />
 
         <EditText
             android:id="@+id/RecipeNameTxt"
@@ -34,12 +32,9 @@
             android:id="@+id/RecipeTimeTittle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/RecipeIngredientsTxt"
             android:layout_marginTop="20dp"
             android:text="Time:"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textAppearance="@style/Titulo" />
 
         <EditText
             android:id="@+id/editRecipeTimeTxt"
@@ -54,9 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Instructions:"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textAppearance="@style/Titulo" />
 
         <EditText
             android:id="@+id/rInstrucTxt"
@@ -80,9 +73,7 @@
         android:layout_above="@+id/RecipeToolsTittle"
         android:layout_marginTop="10dp"
         android:text="Ingredients:"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textAppearance="@style/Titulo" />
 
     <TextView
         android:id="@+id/RecipeToolsTittle"
@@ -91,9 +82,7 @@
         android:layout_marginTop="20dp"
         android:text="Tools:"
         android:layout_alignRight="@+id/RecipeIngredientsTittle"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/Titulo"
         android:layout_above="@+id/PostRecipeBtn" />
 
     <Button

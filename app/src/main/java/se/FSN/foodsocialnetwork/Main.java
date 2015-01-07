@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,7 +43,7 @@ public class Main extends Activity {
     private ListView recipeList;
     private List<Recipe> recipes = new ArrayList<Recipe>();
     private EditText searchString;
-
+    MenuItem item1;
 
     private ArrayList<String> myFavIDS = new ArrayList<>();
     private ArrayList<String> myRecipeIDS = new ArrayList<>();
@@ -75,7 +76,8 @@ public class Main extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent i = new Intent(getApplicationContext(), ShowSingleRecipe.class);
-                i.putExtra(UsefulFunctions.ID_KEY, recipes.get(position).getID());
+
+                i.putExtra(UsefulFunctions.ID_KEY, Long.toString(id));
 
                 startActivity(i);
             }
@@ -128,6 +130,7 @@ public class Main extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        item1 = menu.findItem(R.id.mnuFavourites);
         return true;
     }
 
@@ -149,9 +152,14 @@ public class Main extends Activity {
                 return true;
             case R.id.mnuFavourites:
                 Log.i("MENU" + Main.class.toString(), "Favorites");
+                item.setVisible(false);
                 return true;
             case R.id.mnuMyRecipes:
                 Log.i("MENU" + Main.class.toString(), "My Recipes");
+                MenuInflater inflater = getMenuInflater();
+
+
+                item1.setVisible(true);
                 return true;
         }
         int id = item.getItemId();
