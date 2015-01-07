@@ -1,8 +1,24 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Main" >
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mnuDelete"
+        android:title="Delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/mnuMyAccount"
+        android:title="My Account"
+        android:showAsAction="never"></item>
+
+
+    <item
+        android:id="@+id/mnuFavourites"
+        android:title="Favorites"
+        android:showAsAction="never"></item>
+
+    <item
+        android:id="@+id/mnuLogOut"
+        android:title="LogOut"
+        android:showAsAction="never"></item>
 </menu>

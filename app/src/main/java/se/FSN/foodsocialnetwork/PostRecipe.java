@@ -35,10 +35,8 @@ public class PostRecipe extends Activity {
 
     /*
     TODO:
-    Pasar los ingredientes a la actividad
-    Pasar las herramientas a la actividad
-    Gestionar el return de la actividad al crear receta.
-     */
+    Add Image
+    */
 
     private String recipeName, recipeInstructions, Time;
     private int recipeTime;

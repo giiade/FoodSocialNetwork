@@ -72,15 +72,6 @@ public class ListAdapter extends BaseAdapter {
         String imageUrl = r.getImageUrl();
         thumbNail.setImageUrl(imageUrl, imageLoader);
 
-        //String url = "http://img4.wikia.nocookie.net/__cb20130819001030/lego/images/a/ac/No-Image-Basic.png";
-        //String url = "http://83.254.221.239:9000/recipePicture/24?sessionID=ddd523a3-fe59-4bea-9b8c-f780a4edf651";
-        //if (imageUrl != "") {
-        //  thumbNail.setImageBitmap(BitmapFactory.decodeByteArray(bitImg, 0, bitImg.length));
-        //} else {
-        //    thumbNail.setImageUrl(url, imageLoader);
-        //}
-
-        //
 
         // title
         title.setText(r.getTitle());

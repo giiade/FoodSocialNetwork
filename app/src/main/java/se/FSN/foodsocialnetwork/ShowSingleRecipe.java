@@ -1,10 +1,16 @@
 package se.FSN.foodsocialnetwork;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import se.FSN.foodsocialnetwork.utils.AppController;
 import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
@@ -39,10 +44,11 @@ public class ShowSingleRecipe extends Activity {
     private String timeStr, id;
     private Recipe recipe;
 
-    private ArrayList<String> myFavIDS = new ArrayList<String>();
+    private ArrayList<String> myFavIDS = new ArrayList<>();
+    private ArrayList<String> myRecipeIDS = new ArrayList<>();
+
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-
 
 
     @Override
@@ -67,7 +73,8 @@ public class ShowSingleRecipe extends Activity {
         Resources res = getResources();
 
 
-        myFavIDS = convertToArray(preferences.getString(UsefulFunctions.FAVIDS_KEY, null));
+        myFavIDS = UsefulFunctions.convertToArray(preferences.getString(UsefulFunctions.FAVIDS_KEY, null));
+        myRecipeIDS = UsefulFunctions.convertToArray(preferences.getString(UsefulFunctions.MYRECIPEIDS_KEY, null));
 
 
         Bundle extras = getIntent().getExtras();
@@ -82,7 +89,17 @@ public class ShowSingleRecipe extends Activity {
 
 
         RequestRecipe(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), id);
-        //requestImage(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), id);
+
+
+        new android.os.Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ActionBar actionBar = getActionBar();
+                actionBar.setTitle(recipe.getTitle());
+            }
+        }, 500);
+
+
 
 
         imgButton.setOnClickListener(new View.OnClickListener() {
@@ -128,18 +145,19 @@ public class ShowSingleRecipe extends Activity {
                     if (response.getBoolean(UsefulFunctions.SUC_KEY)) {
                         Toast.makeText(getApplicationContext(),
                                 recipe.getTitle() + " added to Favorites", Toast.LENGTH_SHORT).show();
+                        myFavIDS.add(recipe.getID());
+                        /*String id = recipe.getID();
+                        myFavIDS.add(id);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(UsefulFunctions.FAVIDS_KEY, UsefulFunctions.convertToString(myFavIDS));
+                        editor.commit();*/
+                    } /*else {
                         String id = recipe.getID();
                         myFavIDS.add(id);
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString(UsefulFunctions.FAVIDS_KEY, convertToString(myFavIDS));
+                        editor.putString(UsefulFunctions.FAVIDS_KEY, UsefulFunctions.convertToString(myFavIDS));
                         editor.commit();
-                    } else {
-                        String id = recipe.getID();
-                        myFavIDS.add(id);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString(UsefulFunctions.FAVIDS_KEY, convertToString(myFavIDS));
-                        editor.commit();
-                    }
+                    }*/
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -179,9 +197,9 @@ public class ShowSingleRecipe extends Activity {
                         Toast.makeText(getApplicationContext(),
                                 recipe.getTitle() + " deleted from Favorites", Toast.LENGTH_SHORT).show();
                         myFavIDS.remove(recipe.getID());
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString(UsefulFunctions.FAVIDS_KEY, convertToString(myFavIDS));
-                        editor.commit();
+                        /*SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(UsefulFunctions.FAVIDS_KEY, UsefulFunctions.convertToString(myFavIDS));
+                        editor.commit();*/
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -203,8 +221,6 @@ public class ShowSingleRecipe extends Activity {
         AppController.getInstance().addToRequestQueue(jsonObjReq);
 
     }
-
-
 
 
     public void onInstructionClick(View v) {
@@ -325,6 +341,7 @@ public class ShowSingleRecipe extends Activity {
 
                         imageView.setImageUrl(url, imageLoader);
 
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -346,7 +363,6 @@ public class ShowSingleRecipe extends Activity {
         AppController.getInstance().addToRequestQueue(jsonObjReq);
 
     }
-
 
 
     private String printIngredients(ArrayList<Ingredient> ingredients) {
@@ -384,23 +400,176 @@ public class ShowSingleRecipe extends Activity {
         return result.toString();
     }
 
-    private String convertToString(ArrayList<String> list) {
-        StringBuilder result = new StringBuilder();
-        for (String item : list) {
-            result.append(item);
-            result.append(",");
-        }
-        result.deleteCharAt(result.length() - 1);
 
-        return result.toString();
-    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
 
-    private ArrayList<String> convertToArray(String item) {
-        if (item != null) {
-            ArrayList<String> list = new ArrayList<String>(Arrays.asList(item.split(",")));
-            return list;
+        if (myRecipeIDS.contains(id)) {
+            getMenuInflater().inflate(R.menu.main, menu);
         } else {
-            return null;
+            getMenuInflater().inflate(R.menu.main_menu, menu);
         }
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        //TODO: Finish the menu and actions of it.
+
+        switch (item.getItemId()) {
+            case R.id.mnuLogOut:
+                Log.i("MENU" + Main.class.toString(), "LOGOUT");
+                requestLogout(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"));
+                return true;
+            case R.id.mnuMyAccount:
+                Log.i("MENU" + Main.class.toString(), "MY ACCOUNT");
+                return true;
+            case R.id.mnuFavourites:
+                Log.i("MENU" + Main.class.toString(), "Favorites");
+                return true;
+            case R.id.mnuMyRecipes:
+                Log.i("MENU" + Main.class.toString(), "My Recipes");
+                return true;
+            case R.id.mnuDelete:
+                Log.i("MENU" + Main.class.toString(), "Delete");
+
+                new AlertDialog.Builder(this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Delete Recipe")
+                        .setMessage("Delete " + recipe.getTitle() + "?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteRequest(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), recipe.getID());
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+
+                return true;
+        }
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * We make a request for log out of the server.
+     *
+     * @param sessionID The actual session of the user.
+     */
+    private void requestLogout(String sessionID) {
+
+
+        String url = UsefulFunctions.LOGOUT_URL + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID;
+        Log.d("URL_LOGOUT", url);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("URL_LOGOUT", response.toString());
+                SharedPreferences.Editor editor = preferences.edit();
+                try {
+
+                 /*
+                TODO: Do something with the result.
+                 */
+
+                    if (response.getBoolean(UsefulFunctions.SUC_KEY)) {
+                        editor.putBoolean(UsefulFunctions.LOGED_KEY, false);
+                        editor.commit();
+                        Intent i = new Intent(getApplicationContext(), Login.class);
+                        startActivity(i);
+                        finish();
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("ERROR", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
+    }
+
+    private void deleteRequest(String sessionID, String id) {
+
+
+        String url = UsefulFunctions.DELETERECIPE_URL + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID
+                + "&" + UsefulFunctions.ID_KEY + "=" + id;
+
+        Log.d("URL_FAV", url);
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    if (response.getBoolean(UsefulFunctions.SUC_KEY)) {
+                        Toast.makeText(getApplicationContext(),
+                                recipe.getTitle() + " was deleted.", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(), Main.class);
+                        startActivity(i);
+                        finish();
+                        /*String id = recipe.getID();
+                        myFavIDS.add(id);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(UsefulFunctions.FAVIDS_KEY, UsefulFunctions.convertToString(myFavIDS));
+                        editor.commit();*/
+                    } else {
+                        Toast.makeText(getApplicationContext(), response.getString(UsefulFunctions.ERROR_KEY), Toast.LENGTH_SHORT).show();
+                    }/*else {
+                        String id = recipe.getID();
+                        myFavIDS.add(id);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(UsefulFunctions.FAVIDS_KEY, UsefulFunctions.convertToString(myFavIDS));
+                        editor.commit();
+                    }*/
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("ERROR", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
+    }
+
+
 }
+

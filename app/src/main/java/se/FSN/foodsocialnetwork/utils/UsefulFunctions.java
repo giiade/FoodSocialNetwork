@@ -5,6 +5,9 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import se.FSN.foodsocialnetwork.R;
 
 /**
@@ -16,11 +19,13 @@ public class UsefulFunctions {
     public static final String CRECIPE_URL = "http://83.254.221.239:9000/createRecipe";
     public static final String LOGOUT_URL = "http://83.254.221.239:9000/logout";
     public static final String SHOWALL_URL = "http://83.254.221.239:9000/showAll";
+    public static final String SHOWMYRECIPES_URL = "http://83.254.221.239:9000/showMyRecipes";
     public static final String SINGLERECIPE_URL = "http://83.254.221.239:9000/recipe/";
     public static final String REQUESTIMAGE_URL = "http://83.254.221.239:9000/recipePicture/";
     public static final String FAVREQUEST_URL = "http://83.254.221.239:9000/addFavorite";
     public static final String UNFAVREQUEST_URL = "http://83.254.221.239:9000/deleteFavorite";
     public static final String SEARCHREQUEST_URL = "http://83.254.221.239:9000/searchRecipe";
+    public static final String DELETERECIPE_URL = "http://83.254.221.239:9000/deleteRecipe";
 
     public static final String RECIPEARRAY_KEY = "recipes";
     public static final String RECIPETITLE_KEY = "recipeTitle";
@@ -42,6 +47,7 @@ public class UsefulFunctions {
 
     public static final String INTENTLIST_KEY = "list";
     public static final String FAVIDS_KEY = "favoriteid";
+    public static final String MYRECIPEIDS_KEY = "myrecipeid";
 
 
     public static final String TITLE_KEY = "title";
@@ -89,4 +95,39 @@ public class UsefulFunctions {
 
         return result.toString();
     }
+
+    /**
+     * Used to parse an ArrayList into a string separing the items with ",".
+     * Used to save ArrayList in SharedPreferences as it is imposible to
+     * save ArrayList objects in SharedPreferences
+     *
+     * @param list ArrayList Object containing list of String items
+     * @return String with the form of "Item1,Item2
+     */
+    public static String convertToString(ArrayList<String> list) {
+        StringBuilder result = new StringBuilder();
+        for (String item : list) {
+            result.append(item);
+            result.append(",");
+        }
+        result.deleteCharAt(result.length() - 1);
+
+        return result.toString();
+    }
+
+    /**
+     * Used to parse a string separed by "," into an array.
+     *
+     * @param item each word of the string
+     * @return ArrayList with all the items
+     */
+    public static ArrayList<String> convertToArray(String item) {
+        if (item != null) {
+            ArrayList<String> list = new ArrayList<String>(Arrays.asList(item.split(",")));
+            return list;
+        } else {
+            return null;
+        }
+    }
+
 }

@@ -105,10 +105,6 @@ public class addIngredients extends Activity {
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                /*
-                TODO:
-                Test empty input
-                 */
 
                     if (addThings.getText().toString() != "") {
 

@@ -26,7 +26,7 @@ import se.FSN.foodsocialnetwork.utils.AppController;
 import se.FSN.foodsocialnetwork.utils.UsefulFunctions;
 
 public class Splash extends Activity {
-    private static int SPLASH_TIME_OUT = 3000;
+    private static int SPLASH_TIME_OUT = 3500;
     Animation fadeOut;
     RelativeLayout splashLay;
     SharedPreferences preferences;
