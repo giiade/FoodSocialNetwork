@@ -235,7 +235,8 @@ public class PostRecipe extends Activity {
             result.append(tool);
             result.append(",");
         }
-        result.deleteCharAt(result.length() - 1);
+        if (result.toString().contains(","))
+            result.deleteCharAt(result.lastIndexOf(","));
 
         return result.toString();
     }

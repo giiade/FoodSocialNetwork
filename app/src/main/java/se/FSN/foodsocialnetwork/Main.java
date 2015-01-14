@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,7 +42,7 @@ public class Main extends Activity {
     private ListView recipeList;
     private List<Recipe> recipes = new ArrayList<Recipe>();
     private EditText searchString;
-    MenuItem item1;
+    MenuItem itemFavo, itemMyRec, itemMyAcc, itemMyFri, itemShowAll;
 
     private ArrayList<String> myFavIDS = new ArrayList<>();
     private ArrayList<String> myRecipeIDS = new ArrayList<>();
@@ -119,9 +118,12 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        getActionBar().setTitle("Recipes");
         requestSearch(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), "");
         requestFavIds(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"));
         requestMyRecipesIds(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"));
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle("Recipes");
 
 
     }
@@ -130,7 +132,11 @@ public class Main extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        item1 = menu.findItem(R.id.mnuFavourites);
+        itemFavo = menu.findItem(R.id.mnuFavourites);
+        itemMyAcc = menu.findItem(R.id.mnuMyAccount);
+        itemMyFri = menu.findItem(R.id.mnuMyFriends);
+        itemShowAll = menu.findItem(R.id.mnuShowAll);
+        itemMyRec = menu.findItem(R.id.mnuMyRecipes);
         return true;
     }
 
@@ -141,26 +147,50 @@ public class Main extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
 
         //TODO: Finish the menu and actions of it.
+        //TODO: AÑADIR FAVORITOS Y MIS RECETAS EN LOS MENUS.
 
         switch (item.getItemId()) {
             case R.id.mnuLogOut:
                 Log.i("MENU" + Main.class.toString(), "LOGOUT");
+                //LOGOUT
                 requestLogout(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"));
                 return true;
             case R.id.mnuMyAccount:
                 Log.i("MENU" + Main.class.toString(), "MY ACCOUNT");
+                //We go to our friends Class
+                Toast.makeText(getApplicationContext(), "Implementing", Toast.LENGTH_SHORT).show();
+                //startActivity(i);
                 return true;
             case R.id.mnuFavourites:
                 Log.i("MENU" + Main.class.toString(), "Favorites");
                 item.setVisible(false);
+                itemShowAll.setVisible(true);
+                itemMyRec.setVisible(true);
+                getActionBar().setTitle("Favorites");
+                requestFavorites(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"));
                 return true;
             case R.id.mnuMyRecipes:
                 Log.i("MENU" + Main.class.toString(), "My Recipes");
-                MenuInflater inflater = getMenuInflater();
-
-
-                item1.setVisible(true);
+                item.setVisible(false);
+                itemShowAll.setVisible(true);
+                itemFavo.setVisible(true);
+                getActionBar().setTitle("My Recipes");
+                requestMyRecipes(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"));
                 return true;
+            case R.id.mnuShowAll:
+                Log.i("MENU" + Main.class.toString(), "Show All");
+                item.setVisible(false);
+                itemFavo.setVisible(true);
+                itemMyRec.setVisible(true);
+                requestSearch(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), "");
+                return true;
+            case R.id.mnuMyFriends:
+                Log.i("MENU" + Main.class.toString(), "My Friends");
+                Intent i = new Intent(getApplicationContext(), MyFriends.class);
+                startActivity(i);
+                return true;
+
+
         }
         int id = item.getItemId();
         if (id == R.id.action_settings) {
@@ -275,7 +305,6 @@ public class Main extends Activity {
 
 
     }
-
 
     private void requestSearch(final String sessionID, String tag) {
 
@@ -480,6 +509,72 @@ public class Main extends Activity {
                             adapter.swapItems(auxList);
                         }
 
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("ERROR", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
+
+    }
+
+    /**
+     * Take the favorites from the server
+     *
+     * @param sessionID SessionID of our actual login.
+     */
+    private void requestFavorites(final String sessionID) {
+
+        String url = UsefulFunctions.SEARCHREQUEST_URL + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID
+                + "&" + UsefulFunctions.SEARCHTAG_KEY + "=" + ""
+                + "&" + UsefulFunctions.FAVORITETAG + "=" + true;
+        Log.d("URL_SEARCH", url);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("URL_SEARCH", response.toString());
+
+                try {
+
+
+                    if (response.getBoolean(UsefulFunctions.SUC_KEY)) {
+                        JSONArray jsonRecipes = null;
+                        jsonRecipes = response.getJSONArray(UsefulFunctions.RECIPEARRAY_KEY);
+
+                        List<Recipe> auxList = new ArrayList<>();
+
+                        for (int i = 0; i < jsonRecipes.length(); i++) {
+                            //We create a Recipe Object
+                            Recipe recipe = new Recipe();
+                            //We create a JsonObject that will contain the data of this recipe
+                            JSONObject jRecipe = (JSONObject) jsonRecipes.get(i);
+                            //We pass the data to the recipe object
+                            recipe.setID(jRecipe.getString(UsefulFunctions.ID_KEY));
+                            recipe.setTitle(jRecipe.getString(UsefulFunctions.RECIPETITLE_KEY));
+                            recipe.setImageUrl(UsefulFunctions.createImageURL(sessionID, recipe.getID()));
+                            //Add the recipe object to the array
+                            auxList.add(recipe);
+                            adapter.swapItems(auxList);
+                        }
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(UsefulFunctions.FAVIDS_KEY, UsefulFunctions.convertToString(myFavIDS));
+                        editor.commit();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

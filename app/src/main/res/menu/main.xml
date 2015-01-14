@@ -19,6 +19,18 @@
 
     <item
         android:id="@+id/mnuLogOut"
-        android:title="LogOut"
+        android:title="Logout"
         android:showAsAction="never"></item>
+    <item
+        android:id="@+id/mnuMyFriends"
+        android:title="Friends"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/mnuAddFriend"
+        android:title="Add Friend"
+        android:icon="@android:drawable/ic_input_add"
+        android:showAsAction="always"
+        android:visible="false" />
+
+
 </menu>

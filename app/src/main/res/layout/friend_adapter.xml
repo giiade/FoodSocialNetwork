@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <!-- Image -->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="8dp"
+        android:id="@+id/imagecontainer">
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/image_friend"
+            android:scaleType="fitCenter"
+            android:background="@drawable/circle" />
+
+        <!--  <ImageView
+             android:layout_width="80dp"
+             android:layout_height="80dp"
+             android:src="@drawable/circle"/> -->
+
+
+    </FrameLayout>
+
+
+    <!-- Friend Name -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name_friend"
+        android:layout_alignTop="@+id/imagecontainer"
+        android:layout_toRightOf="@+id/imagecontainer"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <!-- Friend Mail -->
+    <TextView
+        android:id="@+id/mail_friend"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name_friend"
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@id/imagecontainer"
+        android:textSize="15sp"
+        android:textColor="#666666" />
+
+    <!-- Country -->
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textColor="#888888"
+        android:textSize="12sp"
+        android:id="@+id/country_friends" />
+
+</RelativeLayout>

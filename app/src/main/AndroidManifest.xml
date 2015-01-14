@@ -39,6 +39,9 @@
         <activity
             android:name=".ShowSingleRecipe"
             android:label="Recipes" />
+        <activity
+            android:name=".MyFriends"
+            android:label="My Friends" />
     </application>
 
 </manifest>

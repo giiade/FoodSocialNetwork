@@ -7,7 +7,9 @@ import android.view.animation.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import se.FSN.foodsocialnetwork.Friend;
 import se.FSN.foodsocialnetwork.R;
 
 /**
@@ -62,6 +64,20 @@ public class UsefulFunctions {
     public static final String AMOUNTTYPE_KEY = "amountType";
     public static final String TOOLS_KEY = "tools";
     public static final String IMG_KEY = "img";
+
+
+    //Social Stuff
+    public static final String SEARCHUSER_URL = "http://83.254.221.239:9000/searchUser";
+    public static final String SHOWMYFRIENDS_URL = "http://83.254.221.239:9000/showMyFriends";
+
+    public static final String MYFRIENDS_KEY = "friendsid";
+
+    public static final String FRIENDARRAY_KEY = "friends";
+    public static final String USERARRAY_KEY = "users";
+
+    public static final String COUNTRY_KEY = "country";
+    public static final String USERNAME_KEY = "username";
+
 
 
     public static void slide_down(Context context, View v) {
@@ -128,6 +144,27 @@ public class UsefulFunctions {
         } else {
             return null;
         }
+    }
+
+    public static Friend HasItem(List<Friend> items, String item) {
+        Friend result = new Friend();
+
+        for (Friend friend : items) {
+            if (friend.getEmail() == item)
+                result = friend;
+        }
+
+        return result;
+
+    }
+
+    public static List<Friend> HasItem(List<Friend> items, ArrayList<String> item) {
+        List<Friend> result = new ArrayList<>();
+        for (int i = 0; i < item.size(); i++) {
+            Friend f = HasItem(items, item.get(i));
+            result.add(f);
+        }
+        return result;
     }
 
 }
