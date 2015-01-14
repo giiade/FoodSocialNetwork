@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +40,9 @@ public class ShowSingleRecipe extends Activity {
 
     private SharedPreferences preferences;
     private TextView timeTxt, titleTxt;
-    private TextView ingredientsBodyTxt, toolsBodyTxt, instructionsBodyTxt;
+    private TextView ingredientsBodyTxt, toolsBodyTxt, instructionsBodyTxt, commentBodyTxt;
+    private LinearLayout commentCont;
+    private RatingBar commentRating;
     private NetworkImageView imageView;
     private ImageButton imgButton;
     private String timeStr, id;
@@ -46,6 +50,8 @@ public class ShowSingleRecipe extends Activity {
 
     private ArrayList<String> myFavIDS = new ArrayList<>();
     private ArrayList<String> myRecipeIDS = new ArrayList<>();
+
+    MenuItem itemFavo, itemMyRec, itemMyAcc, itemMyFri, itemShowAll;
 
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
@@ -65,6 +71,12 @@ public class ShowSingleRecipe extends Activity {
         instructionsBodyTxt = (TextView) findViewById(R.id.singleRInstructionsBody);
         ingredientsBodyTxt = (TextView) findViewById(R.id.singleRIngredientsBody);
         toolsBodyTxt = (TextView) findViewById(R.id.singleRToolsBody);
+        commentBodyTxt = (TextView) findViewById(R.id.singleRCommentsBody);
+
+        commentCont = (LinearLayout) findViewById(R.id.commentsContainer);
+
+        commentRating = (RatingBar) findViewById(R.id.singleRRating);
+
 
         imgButton = (ImageButton) findViewById(R.id.RecipeFavoriteButton);
 
@@ -253,6 +265,16 @@ public class ShowSingleRecipe extends Activity {
         }
     }
 
+    public void onCommentsClick(View v) {
+        if (commentCont.isShown()) {
+            UsefulFunctions.slide_up(this, commentCont);
+            commentCont.setVisibility(View.GONE);
+        } else {
+            UsefulFunctions.slide_down(this, commentCont);
+            commentCont.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void RequestRecipe(final String sessionID, String ID) {
 
         final String url = UsefulFunctions.SINGLERECIPE_URL + ID + "?" + UsefulFunctions.SESSIONID_KEY + "=" + sessionID;
@@ -304,6 +326,37 @@ public class ShowSingleRecipe extends Activity {
 
                         }
 
+                        //Handle Comments
+
+                        JSONArray jsonComments = null;
+                        jsonComments = response.getJSONArray(UsefulFunctions.COMMENTS_KEY);
+                        final String NEWLINE = System.getProperty("line.separator");
+
+                        ArrayList<String> comments = new ArrayList<>();
+                        double score = 0;
+
+                        if (jsonComments.length() > 0) {
+                            for (int i = 0; i < jsonComments.length(); i++) {
+
+                                StringBuilder comment = new StringBuilder();
+
+                                JSONObject jsonComment = (JSONObject) jsonComments.get(i);
+
+                                comment.append("Comment " + (i + 1) + "->" + NEWLINE);
+                                comment.append("User: " + jsonComment.get(UsefulFunctions.USERCOMMENT_KEY) + "." + NEWLINE);
+                                comment.append(jsonComment.get(UsefulFunctions.COMMENTBODY_KEY) + NEWLINE);
+
+                                comments.add(comment.toString());
+
+                                score += jsonComment.getDouble(UsefulFunctions.SCORE_KEY);
+
+
+                            }
+
+                            score = score / jsonComments.length();
+                        } else {
+                            comments.add("NO COMMENTS");
+                        }
 
                         //Handle recipe as Title and instructions.
                         JSONObject jRecipe = (JSONObject) response.get(UsefulFunctions.RECIPEREQUEST_KEY);
@@ -326,6 +379,9 @@ public class ShowSingleRecipe extends Activity {
                         timeStr = timeTxt.getText().toString();
                         timeTxt.setText(timeStr + recipe.getTime() + " minutes.");
                         instructionsBodyTxt.setText(recipe.getDescription());
+
+                        commentRating.setRating((float) score);
+                        commentBodyTxt.setText(printComments(comments));
 
                         String img = jRecipe.getString(UsefulFunctions.IMG_KEY);
 
@@ -400,6 +456,19 @@ public class ShowSingleRecipe extends Activity {
         return result.toString();
     }
 
+    private String printComments(ArrayList<String> comments) {
+        StringBuilder result = new StringBuilder();
+        final String NEWLINE = System.getProperty("line.separator");
+
+        for (int i = 0; i < comments.size(); i++) {
+            String comment = comments.get(i);
+            result.append(comment);
+            result.append(NEWLINE);
+        }
+
+        return result.toString();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -410,6 +479,17 @@ public class ShowSingleRecipe extends Activity {
         } else {
             getMenuInflater().inflate(R.menu.main_menu, menu);
         }
+
+        itemFavo = menu.findItem(R.id.mnuFavourites);
+        itemMyAcc = menu.findItem(R.id.mnuMyAccount);
+        itemMyFri = menu.findItem(R.id.mnuMyFriends);
+        itemShowAll = menu.findItem(R.id.mnuShowAll);
+        itemMyRec = menu.findItem(R.id.mnuMyRecipes);
+
+        itemShowAll.setVisible(true);
+        itemFavo.setVisible(false);
+        itemMyRec.setVisible(false);
+
         return true;
     }
 
@@ -419,7 +499,6 @@ public class ShowSingleRecipe extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        //TODO: Finish the menu and actions of it.
 
         switch (item.getItemId()) {
             case R.id.mnuLogOut:
@@ -428,13 +507,24 @@ public class ShowSingleRecipe extends Activity {
                 return true;
             case R.id.mnuMyAccount:
                 Log.i("MENU" + Main.class.toString(), "MY ACCOUNT");
+                //We go to our friends Class
+                Intent My = new Intent(getApplicationContext(), ShowUser.class);
+                My.putExtra(UsefulFunctions.MAIL_KEY, preferences.getString(UsefulFunctions.MAIL_KEY, "Null"));
+                My.putExtra(UsefulFunctions.MYACCOUNT_KEY, true);
+                startActivity(My);
                 return true;
-            case R.id.mnuFavourites:
-                Log.i("MENU" + Main.class.toString(), "Favorites");
+            case R.id.mnuShowAll:
+                Log.i("MENU" + Main.class.toString(), "Show All");
+                item.setVisible(false);
+                Intent all = new Intent(getApplicationContext(), Main.class);
+                startActivity(all);
                 return true;
-            case R.id.mnuMyRecipes:
-                Log.i("MENU" + Main.class.toString(), "My Recipes");
+            case R.id.mnuMyFriends:
+                Log.i("MENU" + Main.class.toString(), "My Friends");
+                Intent i = new Intent(getApplicationContext(), MyFriends.class);
+                startActivity(i);
                 return true;
+
             case R.id.mnuDelete:
                 Log.i("MENU" + Main.class.toString(), "Delete");
 

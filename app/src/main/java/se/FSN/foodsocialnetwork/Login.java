@@ -44,6 +44,8 @@ public class Login extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getActionBar().hide();
+
 
         //From here Start Coding
         //Access to the shared preference file.
@@ -107,6 +109,8 @@ public class Login extends Activity {
 
                         //Save the SessionId for further requests.
                         editor.putString(UsefulFunctions.SESSIONID_KEY, sessionID);
+                        //Save the email for further request
+                        editor.putString(UsefulFunctions.MAIL_KEY, username);
 
                         //Checkbox
                         if (saveData.isChecked()) {

@@ -17,6 +17,8 @@
     <string name="SingleInstructionsTitle">Instructions</string>
     <string name="SingleToolTitle">Tools</string>
 
+    <string name="SpinnerCountry">Select a country</string>
+
 
     <string-array name="units_array">
         <item>grams</item>

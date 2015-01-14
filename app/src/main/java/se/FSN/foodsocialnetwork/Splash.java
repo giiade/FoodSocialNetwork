@@ -37,6 +37,8 @@ public class Splash extends Activity {
         setContentView(R.layout.activity_splash);
         preferences = getSharedPreferences(UsefulFunctions.PREFERENCES_KEY, Context.MODE_PRIVATE);
 
+        getActionBar().hide();
+
 
         splashLay = (RelativeLayout) findViewById(R.id.splashRlt);
         requestLogin();

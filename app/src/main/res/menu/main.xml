@@ -13,24 +13,30 @@
 
 
     <item
-        android:id="@+id/mnuFavourites"
-        android:title="Favorites"
-        android:showAsAction="never"></item>
+        android:id="@+id/mnuMyRecipes"
+        android:title="My Recipes"
+        android:showAsAction="never" />
 
     <item
-        android:id="@+id/mnuLogOut"
-        android:title="Logout"
-        android:showAsAction="never"></item>
+        android:id="@+id/mnuShowAll"
+        android:title="All Recipes"
+        android:showAsAction="never"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/mnuFavourites"
+        android:title="Favorites"
+        android:showAsAction="never" />
+
     <item
         android:id="@+id/mnuMyFriends"
         android:title="Friends"
         android:showAsAction="never" />
+
     <item
-        android:id="@+id/mnuAddFriend"
-        android:title="Add Friend"
-        android:icon="@android:drawable/ic_input_add"
-        android:showAsAction="always"
-        android:visible="false" />
+        android:id="@+id/mnuLogOut"
+        android:title="Logout"
+        android:showAsAction="never" />
 
 
 </menu>

@@ -140,6 +140,47 @@
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray" />
 
+            <TextView
+                android:id="@+id/singleRCommentsTitle"
+                style="@style/Subtitle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                android:textAppearance="@style/Subtitle"
+                android:clickable="true"
+                android:onClick="onCommentsClick" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/commentsContainer"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/singleRRating"
+                    android:isIndicator="true"
+                    android:focusable="false"
+                    android:clickable="false" />
+
+                <TextView
+                    android:id="@+id/singleRCommentsBody"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Body"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
 
         </LinearLayout>
 

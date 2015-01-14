@@ -146,9 +146,6 @@ public class Main extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        //TODO: Finish the menu and actions of it.
-        //TODO: AÑADIR FAVORITOS Y MIS RECETAS EN LOS MENUS.
-
         switch (item.getItemId()) {
             case R.id.mnuLogOut:
                 Log.i("MENU" + Main.class.toString(), "LOGOUT");
@@ -158,8 +155,10 @@ public class Main extends Activity {
             case R.id.mnuMyAccount:
                 Log.i("MENU" + Main.class.toString(), "MY ACCOUNT");
                 //We go to our friends Class
-                Toast.makeText(getApplicationContext(), "Implementing", Toast.LENGTH_SHORT).show();
-                //startActivity(i);
+                Intent My = new Intent(getApplicationContext(), ShowUser.class);
+                My.putExtra(UsefulFunctions.MAIL_KEY, preferences.getString(UsefulFunctions.MAIL_KEY, "Null"));
+                My.putExtra(UsefulFunctions.MYACCOUNT_KEY, true);
+                startActivity(My);
                 return true;
             case R.id.mnuFavourites:
                 Log.i("MENU" + Main.class.toString(), "Favorites");

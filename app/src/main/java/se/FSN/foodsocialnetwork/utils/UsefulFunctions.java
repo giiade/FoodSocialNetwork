@@ -69,14 +69,30 @@ public class UsefulFunctions {
     //Social Stuff
     public static final String SEARCHUSER_URL = "http://83.254.221.239:9000/searchUser";
     public static final String SHOWMYFRIENDS_URL = "http://83.254.221.239:9000/showMyFriends";
+    public static final String ADDFRIEND_URL = "http://83.254.221.239:9000/addFriend";
+    public static final String DELETEFRIEND_URL = "http://83.254.221.239:9000/deleteFriend";
+    public static final String USERIMAGE_URL = "http://83.254.221.239:9000/userPicture";
 
     public static final String MYFRIENDS_KEY = "friendsid";
 
     public static final String FRIENDARRAY_KEY = "friends";
-    public static final String USERARRAY_KEY = "users";
+
 
     public static final String COUNTRY_KEY = "country";
     public static final String USERNAME_KEY = "username";
+    public static final String FOLLOWER_KEY = "follower";
+
+    public static final String COMMENTS_KEY = "comments";
+    public static final String USERCOMMENT_KEY = "user";
+    public static final String SCORE_KEY = "score";
+    public static final String COMMENTBODY_KEY = "commentText";
+
+    public static final String MYACCOUNT_KEY = "myaccount";
+
+    //Account Management
+    public static final String CHANGEUSER_URL = "http://83.254.221.239:9000/editUsername";
+    public static final String CHANGEPASS_URL = "http://83.254.221.239:9000/editEmail";
+    public static final String CHANGECOUNTRY_URL = "http://83.254.221.239:9000/editCountry";
 
 
 
@@ -111,6 +127,20 @@ public class UsefulFunctions {
 
         return result.toString();
     }
+
+    public static String createUserImageURL(String sessionID, String userMail) {
+        StringBuilder result = new StringBuilder();
+        result.append(USERIMAGE_URL);
+        result.append("?");
+        result.append(SESSIONID_KEY);
+        result.append("=" + sessionID);
+        result.append("&" + MAIL_KEY);
+        result.append("=" + userMail);
+
+        return result.toString();
+    }
+
+
 
     /**
      * Used to parse an ArrayList into a string separing the items with ",".

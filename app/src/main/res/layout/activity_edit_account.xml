@@ -58,7 +58,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/editspinnerCountry"
-            android:layout_below="@+id/editCountry" />
+            android:layout_below="@+id/editCountry"
+            android:prompt="@string/SpinnerCountry" />
     </LinearLayout>
 
     <Button
@@ -66,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:text="Edit Account"
+        android:text="Save Changes"
         android:id="@+id/editAccountBtn" />
 
 </RelativeLayout>

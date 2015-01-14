@@ -26,27 +26,20 @@
         android:background="#00FFFFFF"
         android:src="@android:drawable/ic_menu_search" />
 
-    <LinearLayout
-        android:id="@+id/layout_friends_container"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
+
+    <ListView
+        android:id="@+id/friendList"
         android:layout_below="@id/searchText_friend"
-        android:padding="5dp"
-        android:layout_above="@+id/showMyFriendsBtn">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:dividerHeight="1dp"
+        android:divider="@color/list_divider"
+        android:listSelector="@drawable/list_row_selector"
+        android:layout_above="@+id/showMyFriendsBtn" />
 
-        <ListView
-            android:id="@+id/friendList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:dividerHeight="1dp"
-            android:divider="@color/list_divider"
-            android:listSelector="@drawable/list_row_selector" />
-
-    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"

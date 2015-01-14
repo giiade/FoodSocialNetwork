@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import se.FSN.foodsocialnetwork.utils.AppController;
@@ -25,10 +26,13 @@ public class FriendAdapter extends BaseAdapter {
     private List<Friend> friendItems;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
+    private ArrayList<String> myFriendsIds = new ArrayList<>();
+
 
     public FriendAdapter(Activity activity, List<Friend> friendsItems) {
         this.activity = activity;
         this.friendItems = friendsItems;
+
     }
 
     public void swapItems(List<Friend> items) {
@@ -48,9 +52,11 @@ public class FriendAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        Friend f = friendItems.get(position);
+        return position;
+        /*Friend f = friendItems.get(position);
         Long id = Long.valueOf(f.getID());
         return id;
+        */
     }
 
     @Override
@@ -75,9 +81,9 @@ public class FriendAdapter extends BaseAdapter {
 
         // thumbnail image
         String imageUrl = f.getImgUrl();
-        //TODO: Search profile Photo
-//        thumbNail.setImageUrl(imageUrl, imageLoader);
-        thumbNail.setImageUrl("http://www.online-image-editor.com//styles/2014/images/example_image.png", imageLoader);
+        //Log.i("IMAGEURL",imageUrl);
+        thumbNail.setImageUrl(imageUrl, imageLoader);
+        //thumbNail.setImageUrl("http://www.online-image-editor.com//styles/2014/images/example_image.png", imageLoader);
 
 
         // title
@@ -89,6 +95,11 @@ public class FriendAdapter extends BaseAdapter {
         // Country
         countryTxt.setText(f.getCountry());
 
+        convertView.setTag(f.getEmail());
+
+
         return convertView;
     }
+
+
 }

@@ -3,17 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/UserFavoriteButton"
-        android:src="@android:drawable/btn_star_big_off"
-        android:scaleType="fitXY"
-        android:background="#00FFFFFF"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true" />
-
-
     <TextView
         android:id="@+id/singleUName"
         android:layout_width="wrap_content"
@@ -73,5 +62,13 @@
             style="@style/New" />
 
     </LinearLayout>
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Edit Account"
+        android:id="@+id/EditMyAccountBtn" />
 
 </RelativeLayout>

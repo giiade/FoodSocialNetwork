@@ -16,14 +16,12 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:id="@+id/image_friend"
-            android:scaleType="fitCenter"
-            android:background="@drawable/circle" />
+            android:scaleType="fitCenter" />
 
-        <!--  <ImageView
-             android:layout_width="80dp"
-             android:layout_height="80dp"
-             android:src="@drawable/circle"/> -->
-
+        <!-- <View
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/circle"/> -->
 
     </FrameLayout>
 
@@ -46,7 +44,7 @@
         android:layout_below="@+id/name_friend"
         android:layout_marginTop="1dp"
         android:layout_toRightOf="@id/imagecontainer"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:textColor="#666666" />
 
     <!-- Country -->
@@ -56,7 +54,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:textColor="#888888"
-        android:textSize="12sp"
+        android:textSize="13sp"
+        android:layout_toRightOf="@id/imagecontainer"
         android:id="@+id/country_friends" />
+
 
 </RelativeLayout>

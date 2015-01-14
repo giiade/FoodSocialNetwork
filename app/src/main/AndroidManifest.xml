@@ -42,6 +42,12 @@
         <activity
             android:name=".MyFriends"
             android:label="My Friends" />
+        <activity
+            android:name=".ShowUser"
+            android:label="User" />
+        <activity
+            android:name=".EditAccount"
+            android:label="Edit" />
     </application>
 
 </manifest>

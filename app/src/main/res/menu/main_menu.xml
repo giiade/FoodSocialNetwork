@@ -21,14 +21,6 @@
         android:title="Favorites"
         android:showAsAction="never" />
 
-
-    <item
-        android:id="@+id/mnuAddFriend"
-        android:title="Add Friend"
-        android:icon="@android:drawable/ic_input_add"
-        android:showAsAction="always"
-        android:visible="false" />
-
     <item
         android:id="@+id/mnuMyFriends"
         android:title="Friends"
