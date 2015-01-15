@@ -94,7 +94,7 @@ public class UsefulFunctions {
 
     //Account Management
     public static final String CHANGEUSER_URL = "http://83.254.221.239:9000/editUsername";
-    public static final String CHANGEPASS_URL = "http://83.254.221.239:9000/editEmail";
+    public static final String CHANGEPASS_URL = "http://83.254.221.239:9000/editPassword";
     public static final String CHANGECOUNTRY_URL = "http://83.254.221.239:9000/editCountry";
 
 
