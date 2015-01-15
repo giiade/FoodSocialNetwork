@@ -50,6 +50,8 @@ public class createAccount extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
+        getActionBar().hide();
+
 
         userTxt = (TextView) findViewById(R.id.userTxt);
         final TextView passTxt = (TextView) findViewById(R.id.passTxt);

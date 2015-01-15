@@ -72,6 +72,7 @@ public class UsefulFunctions {
     public static final String ADDFRIEND_URL = "http://83.254.221.239:9000/addFriend";
     public static final String DELETEFRIEND_URL = "http://83.254.221.239:9000/deleteFriend";
     public static final String USERIMAGE_URL = "http://83.254.221.239:9000/userPicture";
+    public static final String COMMENT_URL = "http://83.254.221.239:9000/rateAndComment";
 
     public static final String MYFRIENDS_KEY = "friendsid";
 
@@ -83,6 +84,8 @@ public class UsefulFunctions {
     public static final String FOLLOWER_KEY = "follower";
 
     public static final String COMMENTS_KEY = "comments";
+    public static final String COMMENT_KEY = "comment";
+    public static final String RATE_KEY = "rate";
     public static final String USERCOMMENT_KEY = "user";
     public static final String SCORE_KEY = "score";
     public static final String COMMENTBODY_KEY = "commentText";

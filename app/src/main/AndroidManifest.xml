@@ -48,6 +48,10 @@
         <activity
             android:name=".EditAccount"
             android:label="Edit" />
+        <activity
+            android:name=".Comments"
+            android:label="Comment"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" />
     </application>
 
 </manifest>

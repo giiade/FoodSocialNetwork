@@ -75,6 +75,7 @@ public class EditAccount extends Activity {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         countrySpn.setAdapter(adapter);
+        countrySpn.setPrompt("Select a country");
 
         countrySpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -145,7 +146,7 @@ public class EditAccount extends Activity {
                         Toast.makeText(getApplicationContext(),
                                 "Username changed.", Toast.LENGTH_SHORT).show();
 
-                        requestLogout(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"));
+                        //requestLogout(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"));
 
 
                     } else {

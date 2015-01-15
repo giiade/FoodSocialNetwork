@@ -54,6 +54,8 @@ public class PostRecipe extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_recipe);
 
+        getActionBar().hide();
+
 
         NameTxt = (TextView) findViewById(R.id.RecipeNameTxt);
         InstructionsTxt = (TextView) findViewById(R.id.rInstrucTxt);

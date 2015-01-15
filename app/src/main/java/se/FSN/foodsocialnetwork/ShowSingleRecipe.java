@@ -53,6 +53,7 @@ public class ShowSingleRecipe extends Activity {
 
     MenuItem itemFavo, itemMyRec, itemMyAcc, itemMyFri, itemShowAll;
 
+    RatingBar ratingBarLauncher;
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
@@ -79,6 +80,8 @@ public class ShowSingleRecipe extends Activity {
 
 
         imgButton = (ImageButton) findViewById(R.id.RecipeFavoriteButton);
+
+        ratingBarLauncher = (RatingBar) findViewById(R.id.ratingLauncher);
 
 
         recipe = new Recipe();
@@ -112,8 +115,6 @@ public class ShowSingleRecipe extends Activity {
         }, 500);
 
 
-
-
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +138,23 @@ public class ShowSingleRecipe extends Activity {
             }
         });
 
+        ratingBarLauncher.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                Intent i = new Intent(getApplicationContext(), Comments.class);
+                i.putExtra(UsefulFunctions.ID_KEY, id);
+                i.putExtra(UsefulFunctions.RATE_KEY, rating);
+                startActivity(i);
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RequestRecipe(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), id);
     }
 
     private void favRequest(String sessionID, String id) {

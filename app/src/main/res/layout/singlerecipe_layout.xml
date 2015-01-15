@@ -24,9 +24,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:text="Recipe Name"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        style="@style/Titulo" />
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/singleRImage"
@@ -180,6 +178,42 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray" />
+
+            <!-- <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter comments:"
+                style="@style/Subtitle"
+                android:id="@+id/comment"
+                /> -->
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingLauncher"
+                android:layout_gravity="center"
+                android:numStars="5"
+                android:stepSize="1"
+                android:rating="2.5" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
+            <!-- <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/commentTxt"
+                android:inputType="textMultiLine"
+                android:ems="30"
+                android:maxLines="10"
+                android:scrollbars="vertical"
+                android:gravity="left|top"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
+                android:hint="Please enter your comment here."/> -->
 
 
         </LinearLayout>
