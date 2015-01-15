@@ -394,7 +394,7 @@ public class ShowSingleRecipe extends Activity {
                         titleTxt.setText(recipe.getTitle());
                         ingredientsBodyTxt.setText(printIngredients(recipe.getIngredients()));
                         toolsBodyTxt.setText(printTools(recipe.getTools()));
-                        timeStr = timeTxt.getText().toString();
+                        timeStr = "Time: ";
                         timeTxt.setText(timeStr + recipe.getTime() + " minutes.");
                         instructionsBodyTxt.setText(recipe.getDescription());
 
