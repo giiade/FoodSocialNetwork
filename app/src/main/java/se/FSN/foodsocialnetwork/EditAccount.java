@@ -111,7 +111,7 @@ public class EditAccount extends Activity {
                 }
 
                 if (passTxt.getText().length() > 0) {
-                    if (passTxt.getText() == rePassTxt.getText()) {
+                    if (passTxt.getText().toString().equals(rePassTxt.getText().toString())) {
                         ChangePassword(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"), rePassTxt.getText().toString());
                         requestLogout(preferences.getString(UsefulFunctions.SESSIONID_KEY, "0000"));
                         Intent i = new Intent(getApplicationContext(), Login.class);

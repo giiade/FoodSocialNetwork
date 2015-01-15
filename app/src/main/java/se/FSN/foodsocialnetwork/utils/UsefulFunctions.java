@@ -159,7 +159,8 @@ public class UsefulFunctions {
             result.append(item);
             result.append(",");
         }
-        result.deleteCharAt(result.length() - 1);
+        if (result.toString().contains(","))
+            result.deleteCharAt(result.lastIndexOf(","));
 
         return result.toString();
     }
